@@ -6,6 +6,17 @@ export class Left extends Keyboard {
     //Change the cat's velocity when the key is pressed
     this.sprite.vx = -5;
     this.sprite.vy = 0;
+    let cancel = setInterval(() => {
+      if (this.isDown) {
+        if (this.counter == 7) {
+          this.counter = 0;
+        }
+        this.sprite.texture = this.textures[this.counter++];
+      } else {
+        clearInterval(cancel);
+      }
+    }, 100);
+    this.sprite.texture = this.textures[this.counter++];
   }
   //Left arrow key `release` method
   public release() {

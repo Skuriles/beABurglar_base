@@ -45,7 +45,7 @@ class Main {
   private setup() {
     let id = PIXI.loader.resources.baseCharJson.textures;
     if (id) {
-      this.baseChar = new PIXI.Sprite(id["back_stand.png"]);
+      this.baseChar = new PIXI.Sprite(id["front_walk0.png"]);
       this.baseChar.position.set(100, 100);
       this.baseChar.vx = 0;
       this.baseChar.vy = 0;

@@ -15,17 +15,17 @@
         },
         {
             "type": "npm",
-            "script": "copy_pixi",
-            "problemMatcher": []
-        },
-        {
-            "type": "npm",
             "script": "less-watch",
             "problemMatcher": []
         },
         {
             "type": "npm",
             "script": "build",
+            "problemMatcher": []
+        },
+        {
+            "type": "npm",
+            "script": "copy_pixi",
             "problemMatcher": []
         }
     ]

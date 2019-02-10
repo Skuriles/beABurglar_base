@@ -1,6 +1,3 @@
-const Keyboard = require("pixi.js-keyboard");
-const Mouse = require("pixi.js-mouse");
-
 export abstract class Keyboard {
   value: string;
   isDown: boolean;

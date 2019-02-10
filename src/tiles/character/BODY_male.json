@@ -1,6 +1,6 @@
 {
     "frames": {
-        "back_stand.png": {
+        "back_walk0.png": {
             "frame": {
                 "x": 0,
                 "y": 512,
@@ -180,7 +180,7 @@
                 "h": 64
             }
         },
-        "left_stand.png": {
+        "left_walk0.png": {
             "frame": {
                 "x": 0,
                 "y": 576,
@@ -360,7 +360,7 @@
                 "h": 64
             }
         },
-        "front_stand.png": {
+        "front_walk0.png": {
             "frame": {
                 "x": 0,
                 "y": 640,
@@ -540,7 +540,7 @@
                 "h": 64
             }
         },
-        "right_stand.png": {
+        "right_walk0.png": {
             "frame": {
                 "x": 0,
                 "y": 704,

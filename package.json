@@ -7,7 +7,7 @@
     "less-watch": "less-watch-compiler",
     "copy_pixi": "copyfiles -f  \"./node_modules/pixi.js/dist/pixi.min.js\" \"./node_modules/pixi.js/dist/pixi.min.js.map\" \"dist/pixi\"",
     "start-http": "./node_modules/.bin/http-server ./dist -a localhost -p 63333 -c-1",
-    "start-all": "npm run copy_pixi && npm run less-watch && npm run start-http",
+    "start-all": "npm run copy_pixirc && npm run less-watch && npm run start-http",
     "build": "webpack --config ./webpack.config.js --watch"
   },
   "dependencies": {
@@ -15,9 +15,7 @@
     "http-server": "^0.11.1",
     "less": "^3.9.0",
     "lodash": "^4.17.11",
-    "pixi.js": "^4.8.5",
-    "pixi.js-keyboard": "^1.0.9",
-    "pixi.js-mouse": "^1.0.4",
+    "pixi.js": "4.8.5",
     "spritesheet-js": "^1.2.6"
   },
   "devDependencies": {
