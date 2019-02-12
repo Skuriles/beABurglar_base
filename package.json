@@ -5,17 +5,16 @@
   "private": true,
   "scripts": {
     "less-watch": "less-watch-compiler",
-    "copy_pixi": "copyfiles -f  \"./node_modules/pixi.js/dist/pixi.min.js\" \"./node_modules/pixi.js/dist/pixi.min.js.map\" \"dist/pixi\"",
     "start-http": "./node_modules/.bin/http-server ./dist -a localhost -p 63333 -c-1",
-    "start-all": "npm run copy_pixirc && npm run less-watch && npm run start-http",
-    "build": "webpack --config ./webpack.config.js --watch"
+    "start-all": "npm run less-watch && npm run start-http",
+    "build": "webpack --config ./webpack.config.js --watch --mode=production",
+    "build:dev": "webpack --config ./webpack.config.js --watch --mode=development"
   },
   "dependencies": {
-    "@types/pixi.js": "^4.8.6",
     "http-server": "^0.11.1",
     "less": "^3.9.0",
     "lodash": "^4.17.11",
-    "pixi.js": "4.8.5",
+    "pixi.js": "^5.0.0-rc",
     "spritesheet-js": "^1.2.6"
   },
   "devDependencies": {

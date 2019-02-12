@@ -1,0 +1,13 @@
+{
+    "tilingSprites": [{
+        "fileName": "Tile.json",
+        "tiles": [{
+            "id": "mainBackground",
+            "tile": "floor_2_4.png",
+            "position_x": 200,
+            "position_y": 200,
+            "width": 200,
+            "height": 200
+        }]
+    }]
+}

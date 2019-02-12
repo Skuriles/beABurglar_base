@@ -1,20 +1,45 @@
-import { Left, Up, Right, Down } from "./Keyboard/directions";
+import * as PIXI from "pixi.js";
+import { PixiKeyboard } from "./PixiKeyboard/PixiKeyboard";
+import Key from "./PixiKeyboard/Key";
+import Direction from "./Directions/directionBase";
+import { http } from "./http/http";
 
-class Main {
-  constructor() {
-    this.CreateMainContainer();
-    this.left = new Left("ArrowLeft");
-    this.up = new Up("ArrowUp");
-    this.right = new Right("ArrowRight");
-    this.down = new Down("ArrowDown");
-  }
-
+export class Main {
+  pixiKeyboard: PixiKeyboard;
+  counter: number;
+  direction: Direction;
+  moveX: number = 0;
+  moveY: number = 0;
+  http: http;
   private baseChar: any;
   private app: any;
-  private left: Left;
-  private up: Up;
-  private right: Right;
-  private down: Down;
+
+  constructor() {
+    this.direction = new Direction(this);
+    this.CreateMainContainer();
+    this.pixiKeyboard = new PixiKeyboard();
+    this.counter = 0;
+    this.http = new http();
+    this.pixiKeyboard.keyboardManager.on("pressed", (key: number) => {
+      this.direction.press(key);
+      this.direction.startAnimation();
+    });
+    this.pixiKeyboard.keyboardManager.on("released", (key: number) => {
+      if (
+        key != Key.LEFT &&
+        key != Key.UP &&
+        key != Key.DOWN &&
+        key != Key.RIGHT
+      ) {
+        return;
+      }
+      this.direction.release();
+      this.direction.stopAnimation();
+    });
+    this.pixiKeyboard.keyboardManager.on("down", (key: number) => {
+      this.direction.checkDownEvent(key);
+    });
+  }
 
   private CreateMainContainer() {
     //Create a Pixi Application
@@ -36,16 +61,16 @@ class Main {
     this.app.renderer.autoResize = true;
     this.app.renderer.resize(window.innerWidth, window.innerHeight);
 
-    PIXI.loader
-      .add("baseFloorJson", "tiles/wall_and_floor/Tile.json")
+    PIXI.Loader.shared
       .add("baseCharJson", "tiles/character/BODY_male.json")
-      .load(() => this.initFloor());
+      //.add("baseFloorJson", "tiles/wall_and_floor/Tile.json")
+      .load(() => this.initLevel());
   }
 
   private setup() {
-    let id = PIXI.loader.resources.baseCharJson.textures;
+    let id = PIXI.Loader.shared.resources.baseCharJson.textures;
     if (id) {
-      this.baseChar = new PIXI.Sprite(id["front_walk0.png"]);
+      this.baseChar = new PIXI.AnimatedSprite([id["front_walk0.png"]]);
       this.baseChar.position.set(100, 100);
       this.baseChar.vx = 0;
       this.baseChar.vy = 0;
@@ -56,10 +81,11 @@ class Main {
       this.app.ticker.add((delta: number) => this.gameLoop(delta));
     }
   }
-  private initFloor() {
-    let id = PIXI.loader.resources.baseFloorJson.textures;
+  private initLevel() {
+    this.http.requestJson("level1.json");
+    let id = PIXI.Loader.shared.resources.baseFloorJson.textures;
     if (id) {
-      let baseFloor = new PIXI.Sprite(id["floor_2_4.png"]);
+      let baseFloor = new PIXI.TilingSprite(id["floor_2_4.png"], 200, 200);
       baseFloor.position.set(200, 100);
       this.app.stage.addChild(baseFloor);
       this.app.renderer.render(this.app.stage);
@@ -72,22 +98,19 @@ class Main {
     this.play(delta);
   }
 
-  private assignKeyboardToSprite(sprite: any) {
-    this.left.sprite = this.baseChar;
-    this.left.textures = this.addSpritesToDirection("left");
-    this.right.sprite = this.baseChar;
-    this.right.textures = this.addSpritesToDirection("right");
-    this.up.sprite = this.baseChar;
-    this.up.textures = this.addSpritesToDirection("back");
-    this.down.sprite = this.baseChar;
-    this.down.textures = this.addSpritesToDirection("front");
+  private assignKeyboardToSprite(sprite: PIXI.AnimatedSprite) {
+    this.direction.setSprite(sprite);
+    this.direction.leftTextures = this.addSpritesToDirection("left");
+    this.direction.rightTextures = this.addSpritesToDirection("right");
+    this.direction.upTextures = this.addSpritesToDirection("back");
+    this.direction.downTextures = this.addSpritesToDirection("front");
   }
 
   private addSpritesToDirection(direction: string): any[] {
     var textures = [];
     for (let i = 0; i < 8; i++) {
       var key = direction + "_walk" + i + ".png";
-      let id = PIXI.loader.resources.baseCharJson.textures;
+      let id = PIXI.Loader.shared.resources.baseCharJson.textures;
       if (id != null) {
         textures.push(id[key]);
       }
@@ -98,9 +121,10 @@ class Main {
   public play(delta: number) {
     // do all the automized stuff here!!
     if (this.baseChar !== null) {
-      this.baseChar.x += this.baseChar.vx;
-      this.baseChar.y += this.baseChar.vy;
+      this.baseChar.x += this.moveX;
+      this.baseChar.y += this.moveY;
     }
+    this.pixiKeyboard.keyboardManager.update();
   }
 }
 //main entry point

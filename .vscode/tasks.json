@@ -25,7 +25,7 @@
         },
         {
             "type": "npm",
-            "script": "copy_pixi",
+            "script": "build:dev",
             "problemMatcher": []
         }
     ]

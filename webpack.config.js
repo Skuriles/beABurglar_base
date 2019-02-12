@@ -11,7 +11,7 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
-                test: /\.(jpe?g|gif|png|svg|json|woff|ttf|wav|mp3)$/,
+                test: /\.(jpe?g|gif|png|svg|json|woff|ttf|html|wav|mp3)$/,
                 use: {
                     loader: 'file-loader',
                     options: {}
@@ -24,12 +24,18 @@ module.exports = {
     },
     output: {
         filename: 'main.js',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, '../Server/public')
     },
     plugins: [
         new CopyWebpackPlugin([{
             from: 'src/tiles',
             to: 'tiles'
         }]),
-    ]
+    ],
+    target: "web",
+    node: {
+        fs: "empty",
+        net: "empty",
+        tls: "empty"
+    }
 };
