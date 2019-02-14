@@ -1,26 +1,26 @@
 export class http {
   constructor() {}
-  async requestJson(fileName: string) {
-    this.sendAjaxRequest("POST", "/reqJson", fileName, () => this.test);
+  async requestJson(fileName: string, callback: CallableFunction) {
+    this.sendPostRequest("POST", "/reqJson", { fileName }, callback);
   }
 
-  test() {}
-
-  sendAjaxRequest(
+  private sendPostRequest(
     type: string,
     url: string,
-    params: string,
+    params: any,
     callback: CallableFunction
   ) {
     var xhr = new XMLHttpRequest();
-    xhr.open(type, url);
-    xhr.onload = function() {
-      if (xhr.status === 200) {
-        alert("User's name is " + xhr.responseText);
+    console.log("test");
+    xhr.open(type, url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState == 4 && xhr.status === 200 && xhr.response != "") {
+        callback(xhr.response);
       } else {
-        alert("Request failed.  Returned status of " + xhr.status);
+        // todo handle error
       }
     };
-    xhr.send();
+    xhr.send(JSON.stringify(params));
   }
 }

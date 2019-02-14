@@ -30,6 +30,9 @@ module.exports = {
         new CopyWebpackPlugin([{
             from: 'src/tiles',
             to: 'tiles'
+        }, {
+            from: 'src/levels',
+            to: 'levels'
         }]),
     ],
     target: "web",

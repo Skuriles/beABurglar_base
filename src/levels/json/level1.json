@@ -8,6 +8,21 @@
             "position_y": 200,
             "width": 200,
             "height": 200
+        }, {
+            "id": "mainBackground_2",
+            "tile": "floor_0_0.png",
+            "position_x": 400,
+            "position_y": 200,
+            "width": 200,
+            "height": 200
+        }, {
+            "id": "mainBackground_3",
+            "tile": "floor_0_1.png",
+            "position_x": 600,
+            "position_y": 200,
+            "width": 200,
+            "height": 200,
+            "collision": true
         }]
     }]
 }

@@ -5,13 +5,12 @@
   "private": true,
   "scripts": {
     "less-watch": "less-watch-compiler",
-    "start-http": "./node_modules/.bin/http-server ./dist -a localhost -p 63333 -c-1",
     "start-all": "npm run less-watch && npm run start-http",
     "build": "webpack --config ./webpack.config.js --watch --mode=production",
     "build:dev": "webpack --config ./webpack.config.js --watch --mode=development"
   },
   "dependencies": {
-    "http-server": "^0.11.1",
+    "es6-promise": "^4.2.5",
     "less": "^3.9.0",
     "lodash": "^4.17.11",
     "pixi.js": "^5.0.0-rc",

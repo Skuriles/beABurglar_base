@@ -2,18 +2,17 @@ import Key from "../PixiKeyboard/Key";
 import { Main } from "../Main";
 
 export default class Direction {
-  sprite: any;
-  leftTextures: any[] = [];
-  rightTextures: any[] = [];
-  upTextures: any[] = [];
-  downTextures: any[] = [];
+  sprite!: PIXI.AnimatedSprite;
+  leftTextures: PIXI.Texture[] = [];
+  rightTextures: PIXI.Texture[] = [];
+  upTextures: PIXI.Texture[] = [];
+  downTextures: PIXI.Texture[] = [];
   mainInstance: Main;
   currentKey: number;
   keyPressed = false;
 
   constructor(main: Main) {
     this.mainInstance = main;
-    this.sprite = null;
     this.currentKey = -1;
   }
 
