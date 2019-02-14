@@ -18,4 +18,5 @@ export class Tile {
   width: number = 0;
   height: number = 0;
   collision = false;
+  scale: number = 1;
 }

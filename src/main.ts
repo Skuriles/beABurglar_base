@@ -96,6 +96,10 @@ export class Main {
             if (tile.collision) {
               this.walls.push(floorTiles);
             }
+            if (tile.scale && tile.scale != 1) {
+              floorTiles.scale.x = tile.scale;
+              floorTiles.scale.y = tile.scale;
+            }
             this.app.stage.addChild(floorTiles);
           });
         }
@@ -116,7 +120,7 @@ export class Main {
     let id = this.pixiLoader.resources.baseCharJson.textures;
     if (id) {
       this.baseChar = new PIXI.AnimatedSprite([id["front_walk0.png"]]);
-      this.baseChar.position.set(300, 100);
+      this.baseChar.position.set(300, 200);
       this.baseChar.hitArea = new PIXI.Rectangle(5, 0, 30, 64);
       this.assignKeyboardToSprite(this.baseChar);
       this.app.stage.addChild(this.baseChar);
@@ -230,6 +234,7 @@ export class Main {
     let rec = r1.hitArea as PIXI.Rectangle;
     //hit will determine whether there's a collision
     hit = false;
+    let direction = "";
     let positionsR1 = new HitTestPosition();
     let positionsR2 = new HitTestPosition();
     //Find the center points of each sprite
@@ -254,8 +259,10 @@ export class Main {
 
     //Check for a collision on the x axis
     if (Math.abs(vx) < combinedHalfWidths) {
+      direction = "left";
       //A collision might be occurring. Check for a collision on the y axis
       if (Math.abs(vy) < combinedHalfHeights) {
+        direction = "right";
         //There's definitely a collision happening
         hit = true;
       } else {

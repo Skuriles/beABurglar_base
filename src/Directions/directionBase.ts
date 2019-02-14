@@ -37,7 +37,7 @@ export default class Direction {
       default:
         break;
     }
-    this.sprite.animationSpeed = 0.5;
+    this.sprite.animationSpeed = 0.25;
     this.sprite.play();
   }
 

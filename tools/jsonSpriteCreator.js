@@ -48,46 +48,55 @@ readline.question(`Set Meta Data \n Image File Path (relative to json)?`, (fileN
                                                 readline.question(`column width?`, (columnWidth) => {
                                                     readline.question(`rotated (0 = false)?`, (rotated) => {
                                                         readline.question(`trimmed (0 = false)?`, (trimmed) => {
-                                                            for (let i = 0; i < rows; i++) {
-                                                                for (let j = 0; j < columns; j++) {
-                                                                    var frameObj = {};
-                                                                    var key = prefix + "_" + i + "_" + j + "." + ending;
-                                                                    frameObj.x = 0 + (i * columnWidth);
-                                                                    frameObj.y = 0 + (i * rowHeight);
-                                                                    frameObj.w = columnWidth;
-                                                                    frameObj.h = rowHeight;
-                                                                    var spriteSourceSize = {};
-                                                                    spriteSourceSize.x = 0;
-                                                                    spriteSourceSize.y = 0;
-                                                                    spriteSourceSize.w = columnWidth;
-                                                                    spriteSourceSize.h = rowHeight;
-                                                                    var sourceSize = {};
-                                                                    sourceSize.w = columnWidth;
-                                                                    sourceSize.h = rowHeight;
-                                                                    frames[key] = {};
-                                                                    frames[key].frame = frameObj;
-                                                                    frames[key].sourceSize = sourceSize;
-                                                                    frames[key].spriteSourceSize = spriteSourceSize;
-                                                                    frames[key].rotated = rotated != 0;
-                                                                    frames[key].trimmed = trimmed != 0;
-                                                                    sprite.frames = frames;
-                                                                    let data = JSON.stringify(sprite);
-                                                                    fs.writeFileSync('default.json', data);
-                                                                    readline.close()
+                                                            readline.question(`margin (0 = false)?`, (margin) => {
+                                                                for (let i = 0; i < rows; i++) {
+                                                                    for (let j = 0; j < columns; j++) {
+                                                                        var frameObj = {};
+                                                                        var key = prefix + "_" + i + "_" + j + "." + ending;
+                                                                        let newMargin = margin;
+                                                                        if (j == 0) {
+                                                                            newMargin = 0;
+                                                                        }
+                                                                        frameObj.x = (j * parseInt(columnWidth)) + parseInt(newMargin);
+                                                                        if (i == 0) {
+                                                                            newMargin = 0;
+                                                                        }
+                                                                        frameObj.y = (i * parseInt(rowHeight)) + parseInt(newMargin);
+                                                                        frameObj.w = columnWidth;
+                                                                        frameObj.h = rowHeight;
+                                                                        var spriteSourceSize = {};
+                                                                        spriteSourceSize.x = 0;
+                                                                        spriteSourceSize.y = 0;
+                                                                        spriteSourceSize.w = columnWidth;
+                                                                        spriteSourceSize.h = rowHeight;
+                                                                        var sourceSize = {};
+                                                                        sourceSize.w = columnWidth;
+                                                                        sourceSize.h = rowHeight;
+                                                                        frames[key] = {};
+                                                                        frames[key].frame = frameObj;
+                                                                        frames[key].sourceSize = sourceSize;
+                                                                        frames[key].spriteSourceSize = spriteSourceSize;
+                                                                        frames[key].rotated = rotated != 0;
+                                                                        frames[key].trimmed = trimmed != 0;
+                                                                        sprite.frames = frames;
+                                                                        let data = JSON.stringify(sprite);
+                                                                        fs.writeFileSync('default.json', data);
+                                                                        readline.close()
+                                                                    }
                                                                 }
-                                                            }
+                                                            });
                                                         });
                                                     });
                                                 });
                                             });
-                                        });
+                                        })
                                     })
                                 })
-                            })
+                            });
                         });
                     });
                 });
-            });
+            })
         })
     })
-})
+});

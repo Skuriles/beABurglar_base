@@ -2,27 +2,94 @@
     "tilingSprites": [{
         "fileName": "Tile.json",
         "tiles": [{
-            "id": "mainBackground",
-            "tile": "floor_2_4.png",
-            "position_x": 200,
-            "position_y": 200,
-            "width": 200,
-            "height": 200
-        }, {
-            "id": "mainBackground_2",
-            "tile": "floor_0_0.png",
-            "position_x": 400,
-            "position_y": 200,
-            "width": 200,
-            "height": 200
-        }, {
-            "id": "mainBackground_3",
-            "tile": "floor_0_1.png",
-            "position_x": 600,
-            "position_y": 200,
-            "width": 200,
-            "height": 200,
+                "id": "outside_1",
+                "tile": "floor_2_5.png",
+                "position_x": 0,
+                "position_y": 0,
+                "width": 1200,
+                "height": 96
+            }, {
+                "id": "outside_2",
+                "tile": "floor_2_5.png",
+                "position_x": 0,
+                "position_y": 704,
+                "width": 1200,
+                "height": 96
+            }, {
+                "id": "outside_3",
+                "tile": "floor_2_5.png",
+                "position_x": 1104,
+                "position_y": 96,
+                "width": 96,
+                "height": 608
+            }, {
+                "id": "outside_4",
+                "tile": "floor_2_5.png",
+                "position_x": 0,
+                "position_y": 96,
+                "width": 96,
+                "height": 608
+            },
+            {
+                "id": "mainBackground_2",
+                "tile": "floor_0_0.png",
+                "position_x": 400,
+                "position_y": 200,
+                "width": 200,
+                "height": 200
+            }, {
+                "id": "mainBackground_3",
+                "tile": "floor_0_1.png",
+                "position_x": 600,
+                "position_y": 200,
+                "width": 200,
+                "height": 200,
+                "collision": true
+            }
+        ]
+    }, {
+        "fileName": "Wall.json",
+        "tiles": [{
+            "id": "wall_left",
+            "tile": "wall_48_8.png",
+            "position_x": 96,
+            "position_y": 96,
+            "width": 320,
+            "height": 16,
             "collision": true
         }]
+    }, {
+        "fileName": "interior.json",
+        "tiles": [{
+                "id": "test",
+                "tile": "interior_17_0.png",
+                "position_x": 320,
+                "position_y": 320,
+                "width": 17,
+                "height": 16,
+                "collision": true,
+                "scale": 2
+            },
+            {
+                "id": "test2",
+                "tile": "interior_9_3.png",
+                "position_x": 360,
+                "position_y": 320,
+                "width": 17,
+                "height": 16,
+                "collision": true,
+                "scale": 2
+            },
+            {
+                "id": "test3",
+                "tile": "interior_9_4.png",
+                "position_x": 392,
+                "position_y": 320,
+                "width": 17,
+                "height": 16,
+                "collision": true,
+                "scale": 2
+            }
+        ]
     }]
 }
