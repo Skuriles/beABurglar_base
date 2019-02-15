@@ -57,11 +57,8 @@ readline.question(`Set Meta Data \n Image File Path (relative to json)?`, (fileN
                                                                         if (j == 0) {
                                                                             newMargin = 0;
                                                                         }
-                                                                        frameObj.x = (j * parseInt(columnWidth)) + parseInt(newMargin);
-                                                                        if (i == 0) {
-                                                                            newMargin = 0;
-                                                                        }
-                                                                        frameObj.y = (i * parseInt(rowHeight)) + parseInt(newMargin);
+                                                                        frameObj.x = j * (parseInt(columnWidth) + parseInt(newMargin));
+                                                                        frameObj.y = i * (parseInt(rowHeight) + parseInt(newMargin));
                                                                         frameObj.w = columnWidth;
                                                                         frameObj.h = rowHeight;
                                                                         var spriteSourceSize = {};

@@ -1,5 +1,9 @@
 const path = require('path');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
     entry: './src/main.ts',
@@ -16,7 +20,15 @@ module.exports = {
                     loader: 'file-loader',
                     options: {}
                 }
-            }
+            },
+            {
+                test: /\.less$/,
+                use: [
+                    isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+                    'css-loader',
+                    'less-loader'
+                ],
+            },
         ]
     },
     resolve: {
@@ -34,6 +46,11 @@ module.exports = {
             from: 'src/levels',
             to: 'levels'
         }]),
+        new HtmlWebpackPlugin({
+            title: 'BeABurglar',
+            filename: 'index.html',
+            hash: true
+        })
     ],
     target: "web",
     node: {
@@ -42,3 +59,9 @@ module.exports = {
         tls: "empty"
     }
 };
+
+if (isProduction) {
+    module.exports.plugins.push(
+        new MiniCssExtractPlugin()
+    );
+}

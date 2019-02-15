@@ -194,7 +194,7 @@ export class Main {
 
   private contain(sprite: PIXI.AnimatedSprite, container: PIXI.Rectangle) {
     let collision = undefined;
-
+    let i = 0;
     //Left
     if (sprite.x < container.x) {
       sprite.x = container.x;

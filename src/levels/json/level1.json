@@ -61,31 +61,41 @@
     }, {
         "fileName": "interior.json",
         "tiles": [{
-                "id": "test",
-                "tile": "interior_17_0.png",
-                "position_x": 320,
+                "id": "test1",
+                "tile": "interior_0_24.png",
+                "position_x": 360,
                 "position_y": 320,
-                "width": 17,
+                "width": 16,
                 "height": 16,
                 "collision": true,
                 "scale": 2
             },
             {
                 "id": "test2",
-                "tile": "interior_9_3.png",
-                "position_x": 360,
+                "tile": "interior_0_25.png",
+                "position_x": 392,
                 "position_y": 320,
-                "width": 17,
+                "width": 16,
                 "height": 16,
                 "collision": true,
                 "scale": 2
             },
             {
                 "id": "test3",
-                "tile": "interior_9_4.png",
-                "position_x": 392,
+                "tile": "interior_8_26.png",
+                "position_x": 512,
                 "position_y": 320,
-                "width": 17,
+                "width": 16,
+                "height": 16,
+                "collision": true,
+                "scale": 2
+            },
+            {
+                "id": "test4",
+                "tile": "interior_9_26.png",
+                "position_x": 512,
+                "position_y": 352,
+                "width": 16,
                 "height": 16,
                 "collision": true,
                 "scale": 2
