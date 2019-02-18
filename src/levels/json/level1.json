@@ -1,105 +1,165 @@
 {
     "tilingSprites": [{
-        "fileName": "Tile.json",
+        "fileName": "open_tileset.json",
         "tiles": [{
                 "id": "outside_1",
-                "tile": "floor_2_5.png",
+                "tile": "tile_1_15.png",
                 "position_x": 0,
-                "position_y": 0,
+                "position_y": 1,
                 "width": 1200,
                 "height": 96
             }, {
                 "id": "outside_2",
-                "tile": "floor_2_5.png",
+                "tile": "tile_1_15.png",
                 "position_x": 0,
-                "position_y": 704,
+                "position_y": 705,
                 "width": 1200,
                 "height": 96
             }, {
                 "id": "outside_3",
-                "tile": "floor_2_5.png",
+                "tile": "tile_1_15.png",
                 "position_x": 1104,
-                "position_y": 96,
+                "position_y": 97,
                 "width": 96,
                 "height": 608
             }, {
                 "id": "outside_4",
-                "tile": "floor_2_5.png",
+                "tile": "tile_1_15.png",
                 "position_x": 0,
-                "position_y": 96,
+                "position_y": 97,
                 "width": 96,
                 "height": 608
             },
             {
-                "id": "mainBackground_2",
-                "tile": "floor_0_0.png",
-                "position_x": 400,
-                "position_y": 200,
-                "width": 200,
-                "height": 200
-            }, {
-                "id": "mainBackground_3",
-                "tile": "floor_0_1.png",
+                "id": "mainBackground_1",
+                "tile": "tile_0_14.png",
+                "position_x": 128,
+                "position_y": 129,
+                "width": 944,
+                "height": 544
+            },
+            {
+                "id": "mainWallCornerLeft_1",
+                "tile": "tile_1_8.png",
+                "position_x": 96,
+                "position_y": 97,
+                "width": 32,
+                "height": 32,
+                "collision": true
+            },
+            {
+                "id": "mainWallCornerRight_1",
+                "tile": "tile_1_9.png",
+                "position_x": 1072,
+                "position_y": 97,
+                "width": 32,
+                "height": 32,
+                "collision": true
+            },
+            {
+                "id": "mainWallCornerLeftB_1",
+                "tile": "tile_2_8.png",
+                "position_x": 96,
+                "position_y": 673,
+                "width": 32,
+                "height": 32,
+                "collision": true
+            },
+            {
+                "id": "mainWallCornerRightB_1",
+                "tile": "tile_2_9.png",
+                "position_x": 1072,
+                "position_y": 673,
+                "width": 32,
+                "height": 32,
+                "collision": true
+            },
+            {
+                "id": "mainWallTop_1",
+                "tile": "tile_1_10.png",
+                "position_x": 128,
+                "position_y": 97,
+                "width": 944,
+                "height": 32,
+                "collision": true
+            },
+            {
+                "id": "mainWallBottom_1",
+                "tile": "tile_1_10.png",
+                "position_x": 128,
+                "position_y": 673,
+                "width": 944,
+                "height": 32,
+                "collision": true
+            },
+            {
+                "id": "mainWallLeft_1",
+                "tile": "tile_2_10.png",
+                "position_x": 96,
+                "position_y": 129,
+                "width": 32,
+                "height": 544,
+                "collision": true
+            },
+            {
+                "id": "mainWallRight_1",
+                "tile": "tile_2_10.png",
+                "position_x": 1072,
+                "position_y": 129,
+                "width": 32,
+                "height": 544,
+                "collision": true
+            },
+            {
+                "id": "doorTop_1",
+                "tile": "tile_32_4.png",
                 "position_x": 600,
-                "position_y": 200,
-                "width": 200,
-                "height": 200,
+                "position_y": 97,
+                "width": 32,
+                "height": 32,
+                "collision": true,
+                "interact": {
+                    "type": 1,
+                    "altSprites": ["doorTop_2"]
+                }
+            },
+            {
+                "id": "test1",
+                "tile": "tile_3_7.png",
+                "position_x": 401,
+                "position_y": 320,
+                "width": 32,
+                "height": 32,
+                "collision": true
+            },
+            {
+                "id": "test1",
+                "tile": "tile_3_8.png",
+                "position_x": 432,
+                "position_y": 320,
+                "width": 32,
+                "height": 32,
+                "collision": true
+            },
+            {
+                "id": "test1",
+                "tile": "tile_4_7.png",
+                "position_x": 401,
+                "position_y": 352,
+                "width": 32,
+                "height": 32,
+                "collision": true
+            },
+            {
+                "id": "test1",
+                "tile": "tile_4_8.png",
+                "position_x": 432,
+                "position_y": 352,
+                "width": 32,
+                "height": 32,
                 "collision": true
             }
         ]
-    }, {
-        "fileName": "Wall.json",
-        "tiles": [{
-            "id": "wall_left",
-            "tile": "wall_48_8.png",
-            "position_x": 96,
-            "position_y": 96,
-            "width": 320,
-            "height": 16,
-            "collision": true
-        }]
-    }, {
-        "fileName": "interior.json",
-        "tiles": [{
-                "id": "test1",
-                "tile": "interior_0_24.png",
-                "position_x": 360,
-                "position_y": 320,
-                "width": 16,
-                "height": 16,
-                "collision": true,
-                "scale": 2
-            },
-            {
-                "id": "test2",
-                "tile": "interior_0_25.png",
-                "position_x": 392,
-                "position_y": 320,
-                "width": 16,
-                "height": 16,
-                "collision": true,
-                "scale": 2
-            },
-            {
-                "id": "test3",
-                "tile": "interior_8_26.png",
-                "position_x": 512,
-                "position_y": 320,
-                "width": 16,
-                "height": 16,
-                "collision": true,
-                "scale": 2
-            },
-            {
-                "id": "test4",
-                "tile": "interior_9_26.png",
-                "position_x": 512,
-                "position_y": 352,
-                "width": 16,
-                "height": 16,
-                "collision": true,
-                "scale": 2
-            }
-        ]
     }]
+
 }

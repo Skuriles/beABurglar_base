@@ -8,9 +8,11 @@
     "build:dev": "webpack --config ./webpack.config.js --watch --mode=development"
   },
   "dependencies": {
-    "es6-promise": "^4.2.5",
+    "emoji-regex": "^7.0.3",
+    "es6-promise": "^4.2.6",
     "less": "^3.9.0",
     "lodash": "^4.17.11",
+    "pixi-ui": "git+https://github.com/pixijs/pixi-ui.git",
     "pixi.js": "^5.0.0-rc",
     "spritesheet-js": "^1.2.6"
   },
@@ -24,7 +26,7 @@
     "style-loader": "^0.23.1",
     "ts-loader": "^5.3.3",
     "typescript": "^3.3.3",
-    "webpack": "^4.29.3",
+    "webpack": "^4.29.4",
     "webpack-cli": "^3.2.3"
   },
   "author": "Bene Caspari",

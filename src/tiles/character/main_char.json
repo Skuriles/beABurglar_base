@@ -1,0 +1,255 @@
+{
+    "meta": {
+        "image": "main_char.png",
+        "app": "BeABurglar",
+        "version": "1.0",
+        "format": "RGBA8888",
+        "scale": "1",
+        "size": {
+            "w": "105",
+            "h": "210"
+        }
+    },
+    "frames": {
+        "char_0_0.png": {
+            "frame": {
+                "x": 0,
+                "y": 7,
+                "w": "32",
+                "h": "45"
+            },
+            "sourceSize": {
+                "w": "32",
+                "h": "45"
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": "32",
+                "h": "45"
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "char_0_1.png": {
+            "frame": {
+                "x": 36,
+                "y": 7,
+                "w": "32",
+                "h": "45"
+            },
+            "sourceSize": {
+                "w": "32",
+                "h": "45"
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": "32",
+                "h": "45"
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "char_0_2.png": {
+            "frame": {
+                "x": 73,
+                "y": 7,
+                "w": "32",
+                "h": "45"
+            },
+            "sourceSize": {
+                "w": "32",
+                "h": "45"
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": "32",
+                "h": "45"
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "char_1_0.png": {
+            "frame": {
+                "x": 0,
+                "y": 52,
+                "w": "32",
+                "h": "45"
+            },
+            "sourceSize": {
+                "w": "32",
+                "h": "45"
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": "32",
+                "h": "45"
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "char_1_1.png": {
+            "frame": {
+                "x": 36,
+                "y": 52,
+                "w": "32",
+                "h": "45"
+            },
+            "sourceSize": {
+                "w": "32",
+                "h": "45"
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": "32",
+                "h": "45"
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "char_1_2.png": {
+            "frame": {
+                "x": 73,
+                "y": 52,
+                "w": "32",
+                "h": "45"
+            },
+            "sourceSize": {
+                "w": "32",
+                "h": "45"
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": "32",
+                "h": "45"
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "char_2_0.png": {
+            "frame": {
+                "x": 0,
+                "y": 103,
+                "w": "32",
+                "h": "45"
+            },
+            "sourceSize": {
+                "w": "32",
+                "h": "45"
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": "32",
+                "h": "45"
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "char_2_1.png": {
+            "frame": {
+                "x": 36,
+                "y": 103,
+                "w": "32",
+                "h": "45"
+            },
+            "sourceSize": {
+                "w": "32",
+                "h": "45"
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": "32",
+                "h": "45"
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "char_2_2.png": {
+            "frame": {
+                "x": 73,
+                "y": 103,
+                "w": "32",
+                "h": "45"
+            },
+            "sourceSize": {
+                "w": "32",
+                "h": "45"
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": "32",
+                "h": "45"
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "char_3_0.png": {
+            "frame": {
+                "x": 0,
+                "y": 151,
+                "w": "32",
+                "h": "45"
+            },
+            "sourceSize": {
+                "w": "32",
+                "h": "45"
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": "32",
+                "h": "45"
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "char_3_1.png": {
+            "frame": {
+                "x": 36,
+                "y": 151,
+                "w": "32",
+                "h": "45"
+            },
+            "sourceSize": {
+                "w": "32",
+                "h": "45"
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": "32",
+                "h": "45"
+            },
+            "rotated": false,
+            "trimmed": false
+        },
+        "char_3_2.png": {
+            "frame": {
+                "x": 73,
+                "y": 151,
+                "w": "32",
+                "h": "45"
+            },
+            "sourceSize": {
+                "w": "32",
+                "h": "45"
+            },
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": "32",
+                "h": "45"
+            },
+            "rotated": false,
+            "trimmed": false
+        }
+    }
+}

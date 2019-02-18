@@ -6,7 +6,9 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
-    entry: './src/main.ts',
+    entry: [
+        './src/main.ts'
+    ],
     devtool: 'inline-source-map',
     module: {
         rules: [{
@@ -45,6 +47,9 @@ module.exports = {
         }, {
             from: 'src/levels',
             to: 'levels'
+        }, {
+            from: 'src/baseWindows',
+            to: 'baseWindows'
         }]),
         new HtmlWebpackPlugin({
             title: 'BeABurglar',

@@ -4,6 +4,10 @@ export class http {
     this.sendPostRequest("POST", "/reqJson", { fileName }, callback);
   }
 
+  async requestBaseWindowJson(fileName: string, callback: CallableFunction) {
+    this.sendPostRequest("POST", "/reqBaseWindowJson", { fileName }, callback);
+  }
+
   private sendPostRequest(
     type: string,
     url: string,
@@ -11,7 +15,6 @@ export class http {
     callback: CallableFunction
   ) {
     var xhr = new XMLHttpRequest();
-    console.log("test");
     xhr.open(type, url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = () => {

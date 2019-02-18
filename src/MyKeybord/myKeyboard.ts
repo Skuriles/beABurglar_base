@@ -1,18 +1,19 @@
-import Key from "../PixiKeyboard/Key";
-import { Main } from "../Main";
+import Key from "./PixiKeyboard/Key";
+import { GameLoader } from "../GameApp/GameLoader";
+import { Collision } from "./Collision/collision";
 
-export default class Direction {
+export default class MyKeyboard {
   sprite!: PIXI.AnimatedSprite;
   leftTextures: PIXI.Texture[] = [];
   rightTextures: PIXI.Texture[] = [];
   upTextures: PIXI.Texture[] = [];
   downTextures: PIXI.Texture[] = [];
-  mainInstance: Main;
+  gameLoaderInstance: GameLoader;
   currentKey: number;
   keyPressed = false;
 
-  constructor(main: Main) {
-    this.mainInstance = main;
+  constructor(main: GameLoader) {
+    this.gameLoaderInstance = main;
     this.currentKey = -1;
   }
 
@@ -37,7 +38,7 @@ export default class Direction {
       default:
         break;
     }
-    this.sprite.animationSpeed = 0.25;
+    this.sprite.animationSpeed = 0.2;
     this.sprite.play();
   }
 
@@ -48,8 +49,8 @@ export default class Direction {
   release() {
     this.keyPressed = false;
     this.currentKey = -1;
-    this.mainInstance.moveY = 0;
-    this.mainInstance.moveX = 0;
+    this.gameLoaderInstance.moveY = 0;
+    this.gameLoaderInstance.moveX = 0;
   }
 
   public press(key: number) {
@@ -57,22 +58,29 @@ export default class Direction {
     this.currentKey = key;
     switch (key) {
       case Key.LEFT:
-        this.mainInstance.moveX = -5;
-        this.mainInstance.moveY = 0;
+        this.gameLoaderInstance.moveX = -4;
+        this.gameLoaderInstance.moveY = 0;
         break;
       case Key.RIGHT:
-        this.mainInstance.moveX = 5;
-        this.mainInstance.moveY = 0;
+        this.gameLoaderInstance.moveX = 4;
+        this.gameLoaderInstance.moveY = 0;
         break;
       case Key.UP:
-        this.mainInstance.moveX = 0;
-        this.mainInstance.moveY = -5;
+        this.gameLoaderInstance.moveX = 0;
+        this.gameLoaderInstance.moveY = -4;
         break;
       case Key.DOWN:
-        this.mainInstance.moveX = 0;
-        this.mainInstance.moveY = 5;
+        this.gameLoaderInstance.moveX = 0;
+        this.gameLoaderInstance.moveY = 4;
         break;
+      case Key.ENTER:
+        this.checkInteractionContainers();
     }
+  }
+  private checkInteractionContainers(): any {
+    let i = PIXI.utils.TextureCache;
+    //Collision.hitTestRectangle(this.sprite, this.gameLoaderInstance.app.)
+    this.gameLoaderInstance.basicText.text = "textchange";
   }
 
   public checkDownEvent(key: number): any {

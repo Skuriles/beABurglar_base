@@ -10,6 +10,18 @@ export class TilingSprite {
   tiles: Tile[] = [];
 }
 
+export class Interact {
+  type: InteractTypes = InteractTypes.unknown;
+  altSprites: string[] = [];
+}
+
+export enum InteractTypes {
+  unknown = 0,
+  door = 1,
+  prey = 2,
+  car = 3
+}
+
 export class Tile {
   id: string = "";
   tile: string = "";
@@ -18,5 +30,10 @@ export class Tile {
   width: number = 0;
   height: number = 0;
   collision = false;
+  interact: Interact;
   scale: number = 1;
+
+  constructor() {
+    this.interact = new Interact();
+  }
 }
