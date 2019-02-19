@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import "pixi-ui";
 import { http } from "../http/http";
-import { Level } from "../levels/level";
+import { Level, Tile } from "../levels/level";
 import { PixiKeyboard } from "../MyKeybord/PixiKeyboard/PixiKeyboard";
 import MyKeyboard from "../MyKeybord/myKeyboard";
 import Key from "../MyKeybord/PixiKeyboard/Key";
@@ -21,6 +21,7 @@ export class GameLoader {
   public app!: PIXI.Application;
   basicText!: PIXI.Text;
   mainTextRect!: PIXI.Graphics;
+  interactObjects: Tile[] = [];
 
   constructor() {
     this.pixiLoader = PIXI.Loader.shared;
@@ -130,6 +131,9 @@ export class GameLoader {
             if (tile.scale && tile.scale != 1) {
               floorTiles.scale.x = tile.scale;
               floorTiles.scale.y = tile.scale;
+            }
+            if (tile.interact) {
+              this.interactObjects.push(tile);
             }
             this.app.stage.addChild(floorTiles);
           });

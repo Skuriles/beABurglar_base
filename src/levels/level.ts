@@ -13,6 +13,7 @@ export class TilingSprite {
 export class Interact {
   type: InteractTypes = InteractTypes.unknown;
   altSprites: string[] = [];
+  name: string = "";
 }
 
 export enum InteractTypes {

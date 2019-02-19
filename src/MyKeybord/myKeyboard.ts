@@ -1,6 +1,7 @@
 import Key from "./PixiKeyboard/Key";
 import { GameLoader } from "../GameApp/GameLoader";
 import { Collision } from "./Collision/collision";
+import { Tile } from "../levels/level";
 
 export default class MyKeyboard {
   sprite!: PIXI.AnimatedSprite;
@@ -78,8 +79,11 @@ export default class MyKeyboard {
     }
   }
   private checkInteractionContainers(): any {
-    let i = PIXI.utils.TextureCache;
-    //Collision.hitTestRectangle(this.sprite, this.gameLoaderInstance.app.)
+    this.gameLoaderInstance.interactObjects.forEach((tile: Tile) => {
+      if (Collision.hitTestInteraction(this.sprite, tile, 0, 0)) {
+        console.log(tile.interact.name);
+      }
+    });
     this.gameLoaderInstance.basicText.text = "textchange";
   }
 

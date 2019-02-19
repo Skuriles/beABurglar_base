@@ -119,6 +119,7 @@
                 "height": 32,
                 "collision": true,
                 "interact": {
+                    "name": "Door",
                     "type": 1,
                     "altSprites": ["doorTop_2"]
                 }
