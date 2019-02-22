@@ -41,4 +41,6 @@ export class BasicTextRect {
   public setText(text: string): any {
     this.text.text = text;
   }
+
+  public selectTextId(id: number) {}
 }
