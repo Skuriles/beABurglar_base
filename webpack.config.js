@@ -42,14 +42,8 @@ module.exports = {
     },
     plugins: [
         new CopyWebpackPlugin([{
-            from: 'src/tiles',
-            to: 'tiles'
-        }, {
-            from: 'src/levels',
-            to: 'levels'
-        }, {
-            from: 'src/baseWindows',
-            to: 'baseWindows'
+            from: 'src/assets',
+            to: 'assets'
         }]),
         new HtmlWebpackPlugin({
             title: 'BeABurglar',

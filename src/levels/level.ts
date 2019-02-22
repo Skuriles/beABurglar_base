@@ -12,8 +12,9 @@ export class TilingSprite {
 
 export class Interact {
   type: InteractTypes = InteractTypes.unknown;
-  altSprites: string[] = [];
+  altSprite: string = "";
   name: string = "";
+  prey: string = "";
 }
 
 export enum InteractTypes {
@@ -33,8 +34,12 @@ export class Tile {
   collision = false;
   interact: Interact;
   scale: number = 1;
+  container: string;
+  sprite!: PIXI.TilingSprite;
+  parentFileName: string = "";
 
   constructor() {
     this.interact = new Interact();
+    this.container = "";
   }
 }

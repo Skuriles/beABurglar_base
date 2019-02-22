@@ -1,12 +1,12 @@
 import * as PIXI from "pixi.js";
 import "pixi-ui";
-import { http } from "../http/http";
+import { http } from "../FileTransfer/http/http";
 import { Level, Tile } from "../levels/level";
 import { PixiKeyboard } from "../MyKeybord/PixiKeyboard/PixiKeyboard";
 import MyKeyboard from "../MyKeybord/myKeyboard";
 import Key from "../MyKeybord/PixiKeyboard/Key";
-import { HitTestPosition } from "../MyKeybord/Collision/hitTestPosition";
 import { Collision } from "../MyKeybord/Collision/collision";
+import { BasicTextRect } from "../GuiElements/basicText";
 
 export class GameLoader {
   pixiLoader: PIXI.Loader;
@@ -19,9 +19,10 @@ export class GameLoader {
   walls: PIXI.Sprite[] = [];
   private baseChar!: PIXI.AnimatedSprite;
   public app!: PIXI.Application;
-  basicText!: PIXI.Text;
-  mainTextRect!: PIXI.Graphics;
+  mainTextRect!: BasicTextRect;
   interactObjects: Tile[] = [];
+  listOfAllSprites: PIXI.DisplayObject[] = [];
+  level!: Level;
 
   constructor() {
     this.pixiLoader = PIXI.Loader.shared;
@@ -70,19 +71,13 @@ export class GameLoader {
   }
 
   private createBasicText(): any {
-    this.mainTextRect = new PIXI.Graphics();
-    this.mainTextRect.zIndex = 9997;
-    this.mainTextRect.lineStyle(2, 0x000000, 1);
-    this.mainTextRect.beginFill(0xffffff, 1);
-    this.mainTextRect.drawRoundedRect(50, 5, 800, 100, 15);
-    this.mainTextRect.endFill();
-    this.app.stage.sortableChildren = true;
-    this.basicText = new PIXI.Text("Hello to be a Burglar");
-    this.basicText.zIndex = 9998;
-    this.basicText.x = 5;
-    this.basicText.y = 10;
-    this.app.stage.addChild(this.mainTextRect);
-    this.app.stage.addChild(this.basicText);
+    this.mainTextRect = new BasicTextRect();
+    this.app.stage.addChild(this.mainTextRect.rect);
+    this.app.stage.addChild(this.mainTextRect.text);
+    this.mainTextRect.show();
+    setTimeout(() => {
+      this.mainTextRect.hide();
+    }, 6000);
   }
 
   private createMainContainer() {
@@ -93,10 +88,14 @@ export class GameLoader {
       antialias: true, // default: false
       resolution: 1
     });
+    this.app.stage.sortableChildren = true;
   }
 
   private getLevelData(responseData: any) {
-    this.pixiLoader.add("baseCharJson", "tiles/character/main_char.json");
+    this.pixiLoader.add(
+      "baseCharJson",
+      "assets/tiles/character/main_char.json"
+    );
     let levelData: Level = new Level(JSON.parse(responseData));
 
     levelData.tilingSprites.forEach(tilesSprite => {
@@ -104,7 +103,7 @@ export class GameLoader {
       if (!resource) {
         this.pixiLoader.add(
           tilesSprite.fileName,
-          "tiles/tileset/" + tilesSprite.fileName
+          "assets/tiles/tileset/" + tilesSprite.fileName
         );
       }
     });
@@ -113,12 +112,13 @@ export class GameLoader {
 
   private loadLevel(level: Level) {
     let id: any;
+    this.level = level;
     level.tilingSprites.forEach(tilesSprite => {
       let resource = this.pixiLoader.resources[tilesSprite.fileName];
       if (resource) {
         id = this.pixiLoader.resources[tilesSprite.fileName].textures;
         if (id) {
-          tilesSprite.tiles.forEach(tile => {
+          tilesSprite.tiles.forEach((tile: Tile) => {
             let floorTiles = new PIXI.TilingSprite(
               id[tile.tile],
               tile.width,
@@ -133,9 +133,13 @@ export class GameLoader {
               floorTiles.scale.y = tile.scale;
             }
             if (tile.interact) {
+              tile.parentFileName = tilesSprite.fileName;
+              tile.sprite = floorTiles;
               this.interactObjects.push(tile);
             }
             this.app.stage.addChild(floorTiles);
+            this.listOfAllSprites.push(floorTiles);
+            // sprites done!
           });
         }
       }

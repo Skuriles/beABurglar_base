@@ -1,4 +1,5 @@
 import HotKey from "./HotKey";
+import Key from "./Key";
 
 export default class KeyboardManager extends PIXI.utils.EventEmitter {
   isEnabled: boolean;
@@ -17,6 +18,10 @@ export default class KeyboardManager extends PIXI.utils.EventEmitter {
 
     this._hotKeys = [];
     this._preventDefaultKeys = [];
+    this.setPreventDefault(Key.DOWN);
+    this.setPreventDefault(Key.UP);
+    this.setPreventDefault(Key.LEFT);
+    this.setPreventDefault(Key.RIGHT);
   }
 
   enable() {

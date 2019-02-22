@@ -75,11 +75,28 @@
                 "collision": true
             },
             {
+                "id": "outside_4",
+                "tile": "tile_1_15.png",
+                "position_x": 600,
+                "position_y": 97,
+                "width": 32,
+                "height": 32
+            },
+            {
                 "id": "mainWallTop_1",
                 "tile": "tile_1_10.png",
                 "position_x": 128,
                 "position_y": 97,
-                "width": 944,
+                "width": 472,
+                "height": 32,
+                "collision": true
+            },
+            {
+                "id": "mainWallTop_2",
+                "tile": "tile_1_10.png",
+                "position_x": 632,
+                "position_y": 97,
+                "width": 440,
                 "height": 32,
                 "collision": true
             },
@@ -121,44 +138,63 @@
                 "interact": {
                     "name": "Door",
                     "type": 1,
-                    "altSprites": ["doorTop_2"]
+                    "altSprite": "tile_32_5.png"
                 }
             },
             {
-                "id": "test1",
+                "id": "bookshelf_1",
                 "tile": "tile_3_7.png",
                 "position_x": 401,
                 "position_y": 320,
                 "width": 32,
                 "height": 32,
-                "collision": true
+                "container": "bookShelf_1",
+                "collision": true,
+                "interact": {
+                    "name": "Shelf",
+                    "prey": "Book",
+                    "type": 2,
+                    "altSprite": "tile_3_8.png"
+                }
             },
             {
-                "id": "test1",
+                "id": "bookshelf_2",
                 "tile": "tile_3_8.png",
                 "position_x": 432,
                 "position_y": 320,
                 "width": 32,
                 "height": 32,
-                "collision": true
+                "container": "bookShelf_1",
+                "collision": true,
+                "interact": {
+                    "altSprite": "tile_3_8.png"
+                }
             },
             {
-                "id": "test1",
+                "id": "bookshelf_3",
                 "tile": "tile_4_7.png",
                 "position_x": 401,
                 "position_y": 352,
                 "width": 32,
                 "height": 32,
-                "collision": true
+                "container": "bookShelf_1",
+                "collision": true,
+                "interact": {
+                    "altSprite": "tile_3_8.png"
+                }
             },
             {
-                "id": "test1",
+                "id": "bookshelf_4",
                 "tile": "tile_4_8.png",
                 "position_x": 432,
                 "position_y": 352,
                 "width": 32,
                 "height": 32,
-                "collision": true
+                "container": "bookShelf_1",
+                "collision": true,
+                "interact": {
+                    "altSprite": "tile_3_8.png"
+                }
             }
         ]
     }]
