@@ -1,5 +1,4 @@
 import * as PIXI from "pixi.js";
-import "pixi-ui";
 import { http } from "../FileTransfer/http/http";
 import { Level, Tile } from "../levels/level";
 import { PixiKeyboard } from "../MyKeybord/PixiKeyboard/PixiKeyboard";
@@ -7,6 +6,7 @@ import MyKeyboard from "../MyKeybord/myKeyboard";
 import Key from "../MyKeybord/PixiKeyboard/Key";
 import { Collision } from "../MyKeybord/Collision/collision";
 import { BasicTextRect } from "../GuiElements/basicText";
+import { GameStates } from "./GameState";
 
 export class GameLoader {
   pixiLoader: PIXI.Loader;
@@ -23,6 +23,7 @@ export class GameLoader {
   interactObjects: Tile[] = [];
   listOfAllSprites: PIXI.DisplayObject[] = [];
   level!: Level;
+  gameMode: GameStates = GameStates.Unknown;
 
   constructor() {
     this.pixiLoader = PIXI.Loader.shared;
@@ -37,22 +38,41 @@ export class GameLoader {
     this.createKeyboard();
     this.addBaseChar();
     this.loadLevelDataFromServer();
+    this.gameMode = GameStates.Walking;
   }
 
   private createKeyboard() {
     this.pixiKeyboard = new PixiKeyboard();
     this.counter = 0;
     this.pixiKeyboard.keyboardManager.on("pressed", (key: number) => {
-      this.myKeyboard.press(key);
-      if (this.isDirectionKey(key)) {
-        this.myKeyboard.startAnimation();
+      switch (this.gameMode) {
+        case GameStates.Unknown:
+          return;
+        case GameStates.Walking:
+          this.myKeyboard.press(key);
+          if (this.isDirectionKey(key)) {
+            this.myKeyboard.startAnimation();
+          }
+          break;
+        case GameStates.Menu:
+          this.myKeyboard.handleMenu(key);
+          break;
       }
     });
 
     this.pixiKeyboard.keyboardManager.on("released", (key: number) => {
-      if (this.isDirectionKey(key)) {
-        this.myKeyboard.release();
-        this.myKeyboard.stopAnimation();
+      switch (this.gameMode) {
+        case GameStates.Unknown:
+          return;
+        case GameStates.Walking:
+          if (this.isDirectionKey(key)) {
+            this.myKeyboard.release();
+            this.myKeyboard.stopAnimation();
+          }
+          break;
+        case GameStates.Menu:
+          //this.myKeyboard.handleMenu(key);
+          break;
       }
     });
 
@@ -73,11 +93,13 @@ export class GameLoader {
   private createBasicText(): any {
     this.mainTextRect = new BasicTextRect();
     this.app.stage.addChild(this.mainTextRect.rect);
-    this.app.stage.addChild(this.mainTextRect.text);
+    this.app.stage.addChild(this.mainTextRect.textContainer);
     this.mainTextRect.show();
     setTimeout(() => {
-      this.mainTextRect.hide();
-    }, 6000);
+      //this.mainTextRect.hide();
+      this.mainTextRect.setTexts(["test1", "test2", "test3", "test4", "test5"]);
+      this.gameMode = GameStates.Menu;
+    }, 1000);
   }
 
   private createMainContainer() {

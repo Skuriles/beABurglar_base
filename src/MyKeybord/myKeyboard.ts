@@ -59,6 +59,21 @@ export default class MyKeyboard {
     this.gameLoaderInstance.moveX = 0;
   }
 
+  public handleMenu(key: number): any {
+    this.keyPressed = true;
+    this.currentKey = key;
+    switch (key) {
+      case Key.UP:
+        this.gameLoaderInstance.mainTextRect.moveTextMarker(0);
+        break;
+      case Key.DOWN:
+        this.gameLoaderInstance.mainTextRect.moveTextMarker(1);
+        break;
+      case Key.ENTER:
+        this.gameLoaderInstance.mainTextRect.selectTextId();
+    }
+  }
+
   public press(key: number) {
     this.keyPressed = true;
     this.currentKey = key;
@@ -84,7 +99,9 @@ export default class MyKeyboard {
     }
   }
   private checkInteractionContainers(): any {
-    this.gameLoaderInstance.interactObjects.forEach((tile: Tile) => {
+    for (let i = 0; i < this.gameLoaderInstance.interactObjects.length; i++) {
+      const tile = this.gameLoaderInstance.interactObjects[i];
+
       if (Collision.hitTestInteraction(this.sprite, tile, this.direction)) {
         if (tile.container) {
           let mainInteract: Tile;
@@ -96,18 +113,24 @@ export default class MyKeyboard {
           if (mainInteract) {
             this.interactWithTile(mainInteract);
             this.gameLoaderInstance.mainTextRect.show();
-            this.gameLoaderInstance.mainTextRect.setText(
+            this.gameLoaderInstance.mainTextRect.setFirstRowText(
               mainInteract.interact.name
             );
             this.setContainerAfterInteract(mainInteract);
+            // todo check more than one container
+            return;
           }
         } else {
           this.interactWithTile(tile);
           this.gameLoaderInstance.mainTextRect.show();
-          this.gameLoaderInstance.mainTextRect.setText(tile.interact.name);
+          this.gameLoaderInstance.mainTextRect.setFirstRowText(
+            tile.interact.name
+          );
+          // todo check more than one sprite
+          return;
         }
       }
-    });
+    }
   }
 
   private setContainerAfterInteract(containerTile: Tile) {
@@ -151,23 +174,27 @@ export default class MyKeyboard {
   }
 
   private getMainInteractTileFromContainer(containerTile: Tile): Tile {
-    this.gameLoaderInstance.level.tilingSprites.forEach(
-      (tilingSprite: TilingSprite) => {
-        if (tilingSprite.fileName == containerTile.parentFileName) {
-          tilingSprite.tiles.forEach((tile: Tile) => {
-            if (tile.container == containerTile.container) {
-              if (
-                tile.interact.name &&
-                tile.interact.prey &&
-                tile.interact.type
-              ) {
-                return tile;
-              }
+    for (
+      let i = 0;
+      i < this.gameLoaderInstance.level.tilingSprites.length;
+      i++
+    ) {
+      const tilingSprite = this.gameLoaderInstance.level.tilingSprites[i];
+      if (tilingSprite.fileName == containerTile.parentFileName) {
+        for (let j = 0; j < tilingSprite.tiles.length; j++) {
+          const tile = tilingSprite.tiles[j];
+          if (tile.container == containerTile.container) {
+            if (
+              tile.interact.name &&
+              tile.interact.prey &&
+              tile.interact.type
+            ) {
+              return tile;
             }
-          });
+          }
         }
       }
-    );
-    return null;
+      return null;
+    }
   }
 }
