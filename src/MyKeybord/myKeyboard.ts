@@ -2,6 +2,7 @@ import Key from "./PixiKeyboard/Key";
 import { GameLoader } from "../GameApp/GameLoader";
 import { Collision } from "./Collision/collision";
 import { Tile, TilingSprite, InteractTypes } from "../levels/level";
+import { GameStates } from "../GameApp/GameState";
 
 export default class MyKeyboard {
   sprite!: PIXI.AnimatedSprite;
@@ -71,6 +72,7 @@ export default class MyKeyboard {
         break;
       case Key.ENTER:
         this.gameLoaderInstance.mainTextRect.selectTextId();
+        this.gameLoaderInstance.gameMode = GameStates.Walking;
     }
   }
 
@@ -98,71 +100,8 @@ export default class MyKeyboard {
         this.checkInteractionContainers();
     }
   }
-  private checkInteractionContainers(): any {
-    for (let i = 0; i < this.gameLoaderInstance.interactObjects.length; i++) {
-      const tile = this.gameLoaderInstance.interactObjects[i];
-
-      if (Collision.hitTestInteraction(this.sprite, tile, this.direction)) {
-        if (tile.container) {
-          let mainInteract: Tile;
-          if (tile.interact.name && tile.interact.prey && tile.interact.type) {
-            mainInteract = tile;
-          } else {
-            mainInteract = this.getMainInteractTileFromContainer(tile);
-          }
-          if (mainInteract) {
-            this.interactWithTile(mainInteract);
-            this.gameLoaderInstance.mainTextRect.show();
-            this.gameLoaderInstance.mainTextRect.setFirstRowText(
-              mainInteract.interact.name
-            );
-            this.setContainerAfterInteract(mainInteract);
-            // todo check more than one container
-            return;
-          }
-        } else {
-          this.interactWithTile(tile);
-          this.gameLoaderInstance.mainTextRect.show();
-          this.gameLoaderInstance.mainTextRect.setFirstRowText(
-            tile.interact.name
-          );
-          // todo check more than one sprite
-          return;
-        }
-      }
-    }
-  }
-
-  private setContainerAfterInteract(containerTile: Tile) {
-    this.gameLoaderInstance.level.tilingSprites.forEach(
-      (tilingSprite: TilingSprite) => {
-        if (tilingSprite.fileName == containerTile.parentFileName) {
-          tilingSprite.tiles.forEach((tile: Tile) => {
-            if (tile.container == containerTile.container) {
-              this.interactWithTile(tile);
-            }
-          });
-        }
-      }
-    );
-  }
-
-  private interactWithTile(tile: Tile) {
-    let resource = this.gameLoaderInstance.pixiLoader.resources[
-      tile.parentFileName
-    ];
-    if (resource && resource.textures) {
-      tile.sprite.texture = resource.textures[tile.interact.altSprite];
-      if (tile.interact.type === InteractTypes.door) {
-        this.gameLoaderInstance.walls.forEach(
-          (tilingSprite: PIXI.Sprite, index: number) => {
-            if (tilingSprite == tile.sprite) {
-              this.gameLoaderInstance.walls.splice(index, 1);
-            }
-          }
-        );
-      }
-    }
+  private checkInteractionContainers() {
+    this.gameLoaderInstance.checkInteractionContainers(this.direction);
   }
 
   public checkDownEvent(key: number): any {
@@ -170,31 +109,6 @@ export default class MyKeyboard {
       this.release();
       this.press(key);
       this.startAnimation();
-    }
-  }
-
-  private getMainInteractTileFromContainer(containerTile: Tile): Tile {
-    for (
-      let i = 0;
-      i < this.gameLoaderInstance.level.tilingSprites.length;
-      i++
-    ) {
-      const tilingSprite = this.gameLoaderInstance.level.tilingSprites[i];
-      if (tilingSprite.fileName == containerTile.parentFileName) {
-        for (let j = 0; j < tilingSprite.tiles.length; j++) {
-          const tile = tilingSprite.tiles[j];
-          if (tile.container == containerTile.container) {
-            if (
-              tile.interact.name &&
-              tile.interact.prey &&
-              tile.interact.type
-            ) {
-              return tile;
-            }
-          }
-        }
-      }
-      return null;
     }
   }
 }

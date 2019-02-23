@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import { http } from "../FileTransfer/http/http";
-import { Level, Tile } from "../levels/level";
+import { Level, Tile, InteractTypes, TilingSprite } from "../levels/level";
 import { PixiKeyboard } from "../MyKeybord/PixiKeyboard/PixiKeyboard";
 import MyKeyboard from "../MyKeybord/myKeyboard";
 import Key from "../MyKeybord/PixiKeyboard/Key";
@@ -71,7 +71,7 @@ export class GameLoader {
           }
           break;
         case GameStates.Menu:
-          //this.myKeyboard.handleMenu(key);
+          this.myKeyboard.release();
           break;
       }
     });
@@ -94,12 +94,10 @@ export class GameLoader {
     this.mainTextRect = new BasicTextRect();
     this.app.stage.addChild(this.mainTextRect.rect);
     this.app.stage.addChild(this.mainTextRect.textContainer);
-    this.mainTextRect.show();
+    this.mainTextRect.show(false);
     setTimeout(() => {
-      //this.mainTextRect.hide();
-      this.mainTextRect.setTexts(["test1", "test2", "test3", "test4", "test5"]);
-      this.gameMode = GameStates.Menu;
-    }, 1000);
+      this.mainTextRect.hide();
+    }, 2000);
   }
 
   private createMainContainer() {
@@ -292,5 +290,83 @@ export class GameLoader {
     this.http.requestJson("level1.json", (responseData: any) =>
       this.getLevelData(responseData)
     );
+  }
+
+  public checkInteractionContainers(direction: number): any {
+    for (let i = 0; i < this.interactObjects.length; i++) {
+      const tile = this.interactObjects[i];
+
+      if (Collision.hitTestInteraction(this.baseChar, tile, direction)) {
+        if (tile.container) {
+          let mainInteract: Tile;
+          if (tile.interact.name && tile.interact.prey && tile.interact.type) {
+            mainInteract = tile;
+          } else {
+            mainInteract = this.getMainInteractTileFromContainer(tile);
+          }
+          if (mainInteract) {
+            this.interactWithTile(mainInteract);
+            this.mainTextRect.show(true);
+            this.mainTextRect.setTexts([mainInteract.interact.name]);
+            this.setContainerAfterInteract(mainInteract);
+            // todo check more than one container
+            return;
+          }
+        } else {
+          this.interactWithTile(tile);
+          this.mainTextRect.show(true);
+          this.mainTextRect.setTexts([tile.interact.name]);
+          // todo check more than one sprite
+          return;
+        }
+      }
+    }
+  }
+
+  private setContainerAfterInteract(containerTile: Tile) {
+    this.level.tilingSprites.forEach((tilingSprite: TilingSprite) => {
+      if (tilingSprite.fileName == containerTile.parentFileName) {
+        tilingSprite.tiles.forEach((tile: Tile) => {
+          if (tile.container == containerTile.container) {
+            this.interactWithTile(tile);
+          }
+        });
+      }
+    });
+  }
+
+  private interactWithTile(tile: Tile) {
+    let resource = this.pixiLoader.resources[tile.parentFileName];
+    if (resource && resource.textures) {
+      tile.sprite.texture = resource.textures[tile.interact.altSprite];
+      if (tile.interact.type === InteractTypes.door) {
+        this.walls.forEach((tilingSprite: PIXI.Sprite, index: number) => {
+          if (tilingSprite == tile.sprite) {
+            this.walls.splice(index, 1);
+          }
+        });
+      }
+    }
+  }
+
+  private getMainInteractTileFromContainer(containerTile: Tile): Tile {
+    for (let i = 0; i < this.level.tilingSprites.length; i++) {
+      const tilingSprite = this.level.tilingSprites[i];
+      if (tilingSprite.fileName == containerTile.parentFileName) {
+        for (let j = 0; j < tilingSprite.tiles.length; j++) {
+          const tile = tilingSprite.tiles[j];
+          if (tile.container == containerTile.container) {
+            if (
+              tile.interact.name &&
+              tile.interact.prey &&
+              tile.interact.type
+            ) {
+              return tile;
+            }
+          }
+        }
+      }
+      return null;
+    }
   }
 }

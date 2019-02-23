@@ -10,6 +10,8 @@ export class BasicTextRect {
     this.initTextRect();
     this.textContainer = new PIXI.Container();
     this.textContainer.zIndex = 9995;
+    this.initTextMarker();
+    this.textMarker.visible = false;
     this.setInitalText();
   }
 
@@ -18,26 +20,30 @@ export class BasicTextRect {
     let cancel = setInterval(() => {
       this.rect.alpha = 1 - 1 / i;
       this.textContainer.alpha = 1 - 1 / i;
-      this.textMarker.alpha = 1 - 1 / i;
+      if (this.textMarker) {
+        this.textMarker.alpha = 1 - 1 / i;
+      }
       i--;
       if (i == 0) {
         clearInterval(cancel);
         this.rect.visible = false;
         this.textContainer.visible = false;
-        this.textMarker.visible = false;
+        if (this.textMarker) {
+          this.textMarker.visible = false;
+        }
       }
     }, 20);
   }
 
-  public show() {
+  public show(showTextMarker: boolean) {
     this.rect.alpha = 1;
     this.textContainer.alpha = 1;
     this.rect.visible = true;
     this.textContainer.visible = true;
-  }
-
-  public setFirstRowText(text: string) {
-    this.texts[0].text = text;
+    if (showTextMarker) {
+      this.textMarker.visible = true;
+      this.textMarker.alpha = 1;
+    }
   }
 
   public setTexts(texts: string[]) {
@@ -83,7 +89,7 @@ export class BasicTextRect {
     this.textMarker = new PIXI.Graphics();
     this.textMarker.zIndex = 9998;
     this.textMarker.beginFill(0x000000, 1);
-    this.textMarker.drawRect(60, 10, 780, this.rowSize - 8);
+    this.textMarker.drawRect(55, 10, 790, this.rowSize - 8);
     this.textMarker.endFill();
     this.textContainer.addChild(this.textMarker);
   }
@@ -98,6 +104,13 @@ export class BasicTextRect {
   }
 
   private setTextMarker(): any {
+    this.resetText();
+    this.texts[this.selectedText].style = new PIXI.TextStyle({
+      fill: 0xffffff
+    });
+  }
+
+  private resetText() {
     this.textMarker.y = this.selectedText * this.rowSize;
     for (let i = 0; i < this.texts.length; i++) {
       const text = this.texts[i];
@@ -105,12 +118,12 @@ export class BasicTextRect {
         fill: 0x00000
       });
     }
-    this.texts[this.selectedText].style = new PIXI.TextStyle({
-      fill: 0xffffff
-    });
   }
 
-  public selectTextId() {}
+  public selectTextId() {
+    this.resetText;
+    this.hide();
+  }
 
   public moveTextMarker(down: number): any {
     if (down == 1) {
