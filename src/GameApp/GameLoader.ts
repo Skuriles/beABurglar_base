@@ -138,7 +138,7 @@ export class GameLoader {
       if (resource) {
         id = this.pixiLoader.resources[tilesSprite.fileName].textures;
         if (id) {
-          tilesSprite.tiles.forEach((tile: Tile) => {
+          tilesSprite.floortiles.forEach((tile: Tile) => {
             let floorTiles = new PIXI.TilingSprite(
               id[tile.tile],
               tile.width,
@@ -295,7 +295,6 @@ export class GameLoader {
   public checkInteractionContainers(direction: number): any {
     for (let i = 0; i < this.interactObjects.length; i++) {
       const tile = this.interactObjects[i];
-
       if (Collision.hitTestInteraction(this.baseChar, tile, direction)) {
         if (tile.container) {
           let mainInteract: Tile;
@@ -305,7 +304,8 @@ export class GameLoader {
             mainInteract = this.getMainInteractTileFromContainer(tile);
           }
           if (mainInteract) {
-            this.interactWithTile(mainInteract);
+            this.gameMode = GameStates.Menu;
+            // this.interactWithTile(mainInteract);
             this.mainTextRect.show(true);
             this.mainTextRect.setTexts([mainInteract.interact.name]);
             this.setContainerAfterInteract(mainInteract);
@@ -313,7 +313,8 @@ export class GameLoader {
             return;
           }
         } else {
-          this.interactWithTile(tile);
+          this.gameMode = GameStates.Menu;
+          //this.interactWithTile(tile);
           this.mainTextRect.show(true);
           this.mainTextRect.setTexts([tile.interact.name]);
           // todo check more than one sprite
@@ -326,7 +327,7 @@ export class GameLoader {
   private setContainerAfterInteract(containerTile: Tile) {
     this.level.tilingSprites.forEach((tilingSprite: TilingSprite) => {
       if (tilingSprite.fileName == containerTile.parentFileName) {
-        tilingSprite.tiles.forEach((tile: Tile) => {
+        tilingSprite.floortiles.forEach((tile: Tile) => {
           if (tile.container == containerTile.container) {
             this.interactWithTile(tile);
           }
@@ -353,8 +354,8 @@ export class GameLoader {
     for (let i = 0; i < this.level.tilingSprites.length; i++) {
       const tilingSprite = this.level.tilingSprites[i];
       if (tilingSprite.fileName == containerTile.parentFileName) {
-        for (let j = 0; j < tilingSprite.tiles.length; j++) {
-          const tile = tilingSprite.tiles[j];
+        for (let j = 0; j < tilingSprite.floortiles.length; j++) {
+          const tile = tilingSprite.floortiles[j];
           if (tile.container == containerTile.container) {
             if (
               tile.interact.name &&
@@ -368,5 +369,10 @@ export class GameLoader {
       }
       return null;
     }
+  }
+
+  public handleTextSelection(): void {
+    this.getSelectedItem();
+    this.mainTextRect.selectTextId();
   }
 }

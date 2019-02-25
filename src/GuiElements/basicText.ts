@@ -121,7 +121,7 @@ export class BasicTextRect {
   }
 
   public selectTextId() {
-    this.resetText;
+    this.resetText();
     this.hide();
   }
 

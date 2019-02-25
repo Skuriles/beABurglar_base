@@ -7,7 +7,8 @@ export class Level {
 
 export class TilingSprite {
   fileName: string = "";
-  tiles: Tile[] = [];
+  floortiles: Tile[] = [];
+  interactObjects: Tile[] = [];
 }
 
 export class Interact {
@@ -15,6 +16,7 @@ export class Interact {
   altSprite: string = "";
   name: string = "";
   prey: string = "";
+  possibleTools: number[];
 }
 
 export enum InteractTypes {

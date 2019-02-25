@@ -1,0 +1,13 @@
+{
+    "Tools": [{
+        "name": "Crowbar",
+        "options": {
+            "image": "",
+            "electricty": 4,
+            "skill": 2,
+            "power": 2,
+            "locakpicking": 2,
+            "explosives": 15
+        }
+    }]
+}

@@ -71,7 +71,7 @@ export default class MyKeyboard {
         this.gameLoaderInstance.mainTextRect.moveTextMarker(1);
         break;
       case Key.ENTER:
-        this.gameLoaderInstance.mainTextRect.selectTextId();
+        this.gameLoaderInstance.handleTextSelection();
         this.gameLoaderInstance.gameMode = GameStates.Walking;
     }
   }

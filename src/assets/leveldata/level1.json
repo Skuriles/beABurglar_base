@@ -1,7 +1,7 @@
 {
     "tilingSprites": [{
         "fileName": "open_tileset.json",
-        "tiles": [{
+        "floortiles": [{
                 "id": "outside_1",
                 "tile": "tile_1_15.png",
                 "position_x": 0,
@@ -126,8 +126,9 @@
                 "width": 32,
                 "height": 544,
                 "collision": true
-            },
-            {
+            }
+        ],
+        "interactObjects": [{
                 "id": "doorTop_1",
                 "tile": "tile_32_4.png",
                 "position_x": 600,
@@ -138,7 +139,8 @@
                 "interact": {
                     "name": "Door",
                     "type": 1,
-                    "altSprite": "tile_32_5.png"
+                    "altSprite": "tile_32_5.png",
+                    "possibleTools": [1, 2, 3]
                 }
             },
             {
@@ -154,7 +156,8 @@
                     "name": "Shelf",
                     "prey": "Book",
                     "type": 2,
-                    "altSprite": "tile_3_8.png"
+                    "altSprite": "tile_3_8.png",
+                    "possibleTools": [3, 4, 5]
                 }
             },
             {
