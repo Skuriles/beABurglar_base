@@ -1,17 +1,14 @@
 import * as PIXI from "pixi.js";
 import { http } from "../FileTransfer/http/http";
 import { Level, Tile, InteractTypes, TilingSprite } from "../levels/level";
-import { PixiKeyboard } from "../MyKeybord/PixiKeyboard/PixiKeyboard";
 import MyKeyboard from "../MyKeybord/myKeyboard";
-import Key from "../MyKeybord/PixiKeyboard/Key";
 import { Collision } from "../MyKeybord/Collision/collision";
 import { BasicTextRect } from "../GuiElements/basicText";
 import { GameStates } from "./GameState";
+import { Tool } from "../Levels/tools";
 
 export class GameLoader {
   pixiLoader: PIXI.Loader;
-  pixiKeyboard!: PixiKeyboard;
-  counter!: number;
   myKeyboard!: MyKeyboard;
   http: http;
   moveX: number = 0;
@@ -24,6 +21,7 @@ export class GameLoader {
   listOfAllSprites: PIXI.DisplayObject[] = [];
   level!: Level;
   gameMode: GameStates = GameStates.Unknown;
+  tools: Tool[];
 
   constructor() {
     this.pixiLoader = PIXI.Loader.shared;
@@ -35,59 +33,9 @@ export class GameLoader {
     this.myKeyboard = new MyKeyboard(this);
     this.createMainContainer();
     this.createBasicText();
-    this.createKeyboard();
-    this.addBaseChar();
+    this.loadTools();
     this.loadLevelDataFromServer();
     this.gameMode = GameStates.Walking;
-  }
-
-  private createKeyboard() {
-    this.pixiKeyboard = new PixiKeyboard();
-    this.counter = 0;
-    this.pixiKeyboard.keyboardManager.on("pressed", (key: number) => {
-      switch (this.gameMode) {
-        case GameStates.Unknown:
-          return;
-        case GameStates.Walking:
-          this.myKeyboard.press(key);
-          if (this.isDirectionKey(key)) {
-            this.myKeyboard.startAnimation();
-          }
-          break;
-        case GameStates.Menu:
-          this.myKeyboard.handleMenu(key);
-          break;
-      }
-    });
-
-    this.pixiKeyboard.keyboardManager.on("released", (key: number) => {
-      switch (this.gameMode) {
-        case GameStates.Unknown:
-          return;
-        case GameStates.Walking:
-          if (this.isDirectionKey(key)) {
-            this.myKeyboard.release();
-            this.myKeyboard.stopAnimation();
-          }
-          break;
-        case GameStates.Menu:
-          this.myKeyboard.release();
-          break;
-      }
-    });
-
-    this.pixiKeyboard.keyboardManager.on("down", (key: number) => {
-      this.myKeyboard.checkDownEvent(key);
-    });
-  }
-
-  private isDirectionKey(key: number) {
-    return (
-      key === Key.LEFT ||
-      key === Key.UP ||
-      key === Key.DOWN ||
-      key === Key.RIGHT
-    );
   }
 
   private createBasicText(): any {
@@ -97,7 +45,7 @@ export class GameLoader {
     this.mainTextRect.show(false);
     setTimeout(() => {
       this.mainTextRect.hide();
-    }, 2000);
+    }, 1000);
   }
 
   private createMainContainer() {
@@ -109,6 +57,11 @@ export class GameLoader {
       resolution: 1
     });
     this.app.stage.sortableChildren = true;
+    this.app.renderer.view.style.position = "absolute";
+    this.app.renderer.view.style.display = "block";
+    this.app.renderer.autoDensity = true;
+    this.app.renderer.resize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(this.app.view);
   }
 
   private getLevelData(responseData: any) {
@@ -128,6 +81,12 @@ export class GameLoader {
       }
     });
     this.pixiLoader.load(() => this.loadLevel(levelData));
+  }
+
+  private getToolsData(responseData: any) {
+    let toolData = JSON.parse(responseData);
+    this.tools = toolData.Tools;
+    this.mainTextRect.tools = this.tools;
   }
 
   private loadLevel(level: Level) {
@@ -152,62 +111,47 @@ export class GameLoader {
               floorTiles.scale.x = tile.scale;
               floorTiles.scale.y = tile.scale;
             }
-            if (tile.interact) {
-              tile.parentFileName = tilesSprite.fileName;
-              tile.sprite = floorTiles;
-              this.interactObjects.push(tile);
-            }
             this.app.stage.addChild(floorTiles);
             this.listOfAllSprites.push(floorTiles);
+            // sprites done!
+          });
+          tilesSprite.interactObjects.forEach((tile: Tile) => {
+            let interactObjects = new PIXI.TilingSprite(
+              id[tile.tile],
+              tile.width,
+              tile.height
+            );
+            interactObjects.position.set(tile.position_x, tile.position_y);
+            if (tile.collision) {
+              this.walls.push(interactObjects);
+            }
+            if (tile.scale && tile.scale != 1) {
+              interactObjects.scale.x = tile.scale;
+              interactObjects.scale.y = tile.scale;
+            }
+            tile.parentFileName = tilesSprite.fileName;
+            tile.sprite = interactObjects;
+            this.interactObjects.push(tile);
+            this.app.stage.addChild(interactObjects);
+            this.listOfAllSprites.push(interactObjects);
             // sprites done!
           });
         }
       }
     });
-    this.setup();
+    this.createBaseChar();
   }
 
-  private addBaseChar() {
-    document.body.appendChild(this.app.view);
-    this.app.renderer.view.style.position = "absolute";
-    this.app.renderer.view.style.display = "block";
-    this.app.renderer.autoDensity = true;
-    this.app.renderer.resize(window.innerWidth, window.innerHeight);
-  }
-
-  private setup() {
+  private createBaseChar() {
     let id = this.pixiLoader.resources.baseCharJson.textures;
     if (id) {
       this.baseChar = new PIXI.AnimatedSprite([id["char_0_0.png"]]);
       this.baseChar.position.set(320, 192);
       this.baseChar.hitArea = new PIXI.Rectangle(0, 0, 32, 32);
-      this.assignKeyboardToSprite(this.baseChar);
+      this.myKeyboard.assignKeyboardToSprite(this.baseChar, this.pixiLoader);
       this.app.stage.addChild(this.baseChar);
-      this.app.ticker.add((delta: number) => this.gameLoop(delta));
+      this.app.ticker.add((delta: number) => this.play(delta));
     }
-  }
-  private gameLoop(delta: number) {
-    this.play(delta);
-  }
-
-  private assignKeyboardToSprite(sprite: PIXI.AnimatedSprite) {
-    this.myKeyboard.setSprite(sprite);
-    this.myKeyboard.leftTextures = this.addSpritesToDirection(3);
-    this.myKeyboard.rightTextures = this.addSpritesToDirection(1);
-    this.myKeyboard.upTextures = this.addSpritesToDirection(0);
-    this.myKeyboard.downTextures = this.addSpritesToDirection(2);
-  }
-
-  private addSpritesToDirection(direction: number): any[] {
-    var textures = [];
-    for (let i = 0; i < 3; i++) {
-      var key = "char_" + direction + "_" + i + ".png";
-      let id = this.pixiLoader.resources.baseCharJson.textures;
-      if (id != null) {
-        textures.push(id[key]);
-      }
-    }
-    return textures;
   }
 
   public play(delta: number) {
@@ -223,8 +167,6 @@ export class GameLoader {
             this.moveY
           )
         ) {
-          //if there's a collision, change the message text
-          //and tint the box red
           this.moveX = 0;
           this.moveY = 0;
           moveAllowed = false;
@@ -235,9 +177,9 @@ export class GameLoader {
       if (moveAllowed) {
         this.baseChar.x += this.moveX;
         this.baseChar.y += this.moveY;
-        this.pixiKeyboard.keyboardManager.update();
+        this.myKeyboard.pixiKeyboard.keyboardManager.update();
       }
-      let collision = this.contain(
+      let collision = Collision.contain(
         this.baseChar,
         new PIXI.Rectangle(0, 0, 1600, 800)
       );
@@ -255,40 +197,15 @@ export class GameLoader {
     }
   }
 
-  private contain(sprite: PIXI.AnimatedSprite, container: PIXI.Rectangle) {
-    let collision = undefined;
-    let i = 0;
-    //Left
-    if (sprite.x < container.x) {
-      sprite.x = container.x;
-      collision = "left";
-    }
-
-    //Top
-    if (sprite.y < container.y) {
-      sprite.y = container.y;
-      collision = "top";
-    }
-
-    //Right
-    if (sprite.x + sprite.width > container.width) {
-      sprite.x = container.width - sprite.width;
-      collision = "right";
-    }
-
-    //Bottom
-    if (sprite.y + sprite.height > container.height) {
-      sprite.y = container.height - sprite.height;
-      collision = "bottom";
-    }
-
-    //Return the `collision` value
-    return collision;
-  }
-
   public loadLevelDataFromServer() {
     this.http.requestJson("level1.json", (responseData: any) =>
       this.getLevelData(responseData)
+    );
+  }
+
+  private loadTools() {
+    this.http.requestJson("tools.json", (responseData: any) =>
+      this.getToolsData(responseData)
     );
   }
 
@@ -307,7 +224,7 @@ export class GameLoader {
             this.gameMode = GameStates.Menu;
             // this.interactWithTile(mainInteract);
             this.mainTextRect.show(true);
-            this.mainTextRect.setTexts([mainInteract.interact.name]);
+            this.mainTextRect.updateMainTextBox([mainInteract]);
             this.setContainerAfterInteract(mainInteract);
             // todo check more than one container
             return;
@@ -316,7 +233,7 @@ export class GameLoader {
           this.gameMode = GameStates.Menu;
           //this.interactWithTile(tile);
           this.mainTextRect.show(true);
-          this.mainTextRect.setTexts([tile.interact.name]);
+          this.mainTextRect.updateMainTextBox([tile]);
           // todo check more than one sprite
           return;
         }
@@ -372,7 +289,6 @@ export class GameLoader {
   }
 
   public handleTextSelection(): void {
-    this.getSelectedItem();
     this.mainTextRect.selectTextId();
   }
 }

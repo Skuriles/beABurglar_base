@@ -1,13 +1,81 @@
 {
     "Tools": [{
-        "name": "Crowbar",
-        "options": {
-            "image": "",
-            "electricty": 4,
-            "skill": 2,
-            "power": 2,
-            "locakpicking": 2,
-            "explosives": 15
+            "id": 1,
+            "name": "Crowbar",
+            "options": {
+                "image": "",
+                "electricty": 0,
+                "skill": 15,
+                "power": 15,
+                "locakpicking": 5,
+                "explosives": 0,
+                "loudness": 25
+            }
+        },
+        {
+            "id": 2,
+            "name": "Lockpick",
+            "options": {
+                "image": "",
+                "electricty": 0,
+                "skill": 20,
+                "power": 5,
+                "locakpicking": 35,
+                "explosives": 0,
+                "loudness": 5
+            }
+        },
+        {
+            "id": 3,
+            "name": "Angle Grinder",
+            "options": {
+                "image": "",
+                "electricty": 25,
+                "skill": 25,
+                "power": 20,
+                "locakpicking": 15,
+                "explosives": 0,
+                "loudness": 70
+            }
+        },
+        {
+            "id": 4,
+            "name": "Dynamit",
+            "options": {
+                "image": "",
+                "electricty": 0,
+                "skill": 15,
+                "power": 15,
+                "locakpicking": 5,
+                "explosives": 0,
+                "loudness": 100
+            }
+        },
+        {
+            "id": 5,
+            "name": "Glass Cutter",
+            "options": {
+                "image": "",
+                "electricty": 0,
+                "skill": 30,
+                "power": 5,
+                "locakpicking": 30,
+                "explosives": 0,
+                "loudness": 5
+            }
+        },
+        {
+            "id": 6,
+            "name": "Electronic Tool Kit",
+            "options": {
+                "image": "",
+                "electricty": 35,
+                "skill": 40,
+                "power": 5,
+                "locakpicking": 5,
+                "explosives": 0,
+                "loudness": 20
+            }
         }
-    }]
+    ]
 }

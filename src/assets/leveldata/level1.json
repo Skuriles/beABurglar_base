@@ -140,7 +140,7 @@
                     "name": "Door",
                     "type": 1,
                     "altSprite": "tile_32_5.png",
-                    "possibleTools": [1, 2, 3]
+                    "possibleTools": [1, 2, 4]
                 }
             },
             {
@@ -157,7 +157,7 @@
                     "prey": "Book",
                     "type": 2,
                     "altSprite": "tile_3_8.png",
-                    "possibleTools": [3, 4, 5]
+                    "possibleTools": [1]
                 }
             },
             {

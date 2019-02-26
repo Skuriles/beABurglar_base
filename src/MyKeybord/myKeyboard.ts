@@ -1,11 +1,11 @@
 import Key from "./PixiKeyboard/Key";
 import { GameLoader } from "../GameApp/GameLoader";
-import { Collision } from "./Collision/collision";
-import { Tile, TilingSprite, InteractTypes } from "../levels/level";
 import { GameStates } from "../GameApp/GameState";
+import { PixiKeyboard } from "./PixiKeyboard/PixiKeyboard";
 
 export default class MyKeyboard {
   sprite!: PIXI.AnimatedSprite;
+  pixiKeyboard!: PixiKeyboard;
   leftTextures: PIXI.Texture[] = [];
   rightTextures: PIXI.Texture[] = [];
   upTextures: PIXI.Texture[] = [];
@@ -14,10 +14,12 @@ export default class MyKeyboard {
   currentKey: number;
   keyPressed = false;
   direction: number = Key.DOWN;
+  counter!: number;
 
   constructor(main: GameLoader) {
     this.gameLoaderInstance = main;
     this.currentKey = -1;
+    this.createKeyboard();
   }
 
   setSprite(sprite: any) {
@@ -72,7 +74,7 @@ export default class MyKeyboard {
         break;
       case Key.ENTER:
         this.gameLoaderInstance.handleTextSelection();
-        this.gameLoaderInstance.gameMode = GameStates.Walking;
+      // this.gameLoaderInstance.gameMode = GameStates.Walking;
     }
   }
 
@@ -110,5 +112,94 @@ export default class MyKeyboard {
       this.press(key);
       this.startAnimation();
     }
+  }
+
+  public assignKeyboardToSprite(
+    sprite: PIXI.AnimatedSprite,
+    pixiLoader: PIXI.Loader
+  ) {
+    this.setSprite(sprite);
+    this.leftTextures = this.addSpritesToDirection(3, pixiLoader);
+    this.rightTextures = this.addSpritesToDirection(1, pixiLoader);
+    this.upTextures = this.addSpritesToDirection(0, pixiLoader);
+    this.downTextures = this.addSpritesToDirection(2, pixiLoader);
+  }
+
+  private addSpritesToDirection(
+    direction: number,
+    pixiLoader: PIXI.Loader
+  ): any[] {
+    var textures = [];
+    for (let i = 0; i < 3; i++) {
+      var key = "char_" + direction + "_" + i + ".png";
+      let id = pixiLoader.resources.baseCharJson.textures;
+      if (id != null) {
+        textures.push(id[key]);
+      }
+    }
+    return textures;
+  }
+
+  private createKeyboard() {
+    this.pixiKeyboard = new PixiKeyboard();
+    this.counter = 0;
+    this.initEvents();
+  }
+
+  private initEvents(): any {
+    this.initOnEvent();
+    this.initReleaseEvent();
+    this.initDownEvent();
+  }
+
+  private initDownEvent() {
+    this.pixiKeyboard.keyboardManager.on("down", (key: number) => {
+      this.checkDownEvent(key);
+    });
+  }
+
+  private initReleaseEvent() {
+    this.pixiKeyboard.keyboardManager.on("released", (key: number) => {
+      switch (this.gameLoaderInstance.gameMode) {
+        case GameStates.Unknown:
+          return;
+        case GameStates.Walking:
+          if (this.isDirectionKey(key)) {
+            this.release();
+            this.stopAnimation();
+          }
+          break;
+        case GameStates.Menu:
+          this.release();
+          break;
+      }
+    });
+  }
+
+  private initOnEvent() {
+    this.pixiKeyboard.keyboardManager.on("pressed", (key: number) => {
+      switch (this.gameLoaderInstance.gameMode) {
+        case GameStates.Unknown:
+          return;
+        case GameStates.Walking:
+          this.press(key);
+          if (this.isDirectionKey(key)) {
+            this.startAnimation();
+          }
+          break;
+        case GameStates.Menu:
+          this.handleMenu(key);
+          break;
+      }
+    });
+  }
+
+  private isDirectionKey(key: number) {
+    return (
+      key === Key.LEFT ||
+      key === Key.UP ||
+      key === Key.DOWN ||
+      key === Key.RIGHT
+    );
   }
 }

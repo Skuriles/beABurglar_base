@@ -1,10 +1,16 @@
+import { Tile } from "../levels/level";
+import { Tool } from "../Levels/tools";
+
 export class BasicTextRect {
   rect: PIXI.Graphics;
   textContainer: PIXI.Container;
   texts: PIXI.Text[] = [];
+  tiles: Tile[] = [];
   textMarker: PIXI.Graphics;
   selectedText: number = 0;
   rowSize = 50;
+  tools: Tool[] = [];
+  availableTools: any[];
 
   constructor() {
     this.initTextRect();
@@ -46,20 +52,25 @@ export class BasicTextRect {
     }
   }
 
-  public setTexts(texts: string[]) {
+  public updateMainTextBox(tiles: Tile[]) {
     this.texts = [];
     this.textContainer.removeChildren();
     this.initTextMarker();
-    for (let i = 0; i < texts.length; i++) {
-      let newText = new PIXI.Text(texts[i]);
-      newText.y = i * this.rowSize + 15;
-      newText.x = 65;
-      newText.zIndex = 9999;
-      this.texts.push(newText);
-      this.textContainer.addChild(newText);
+    for (let i = 0; i < tiles.length; i++) {
+      this.addText(tiles[i].interact.name, i);
+      this.tiles.push(tiles[i]);
     }
     this.setTextMarker();
     this.resizeRect();
+  }
+
+  private addText(text: string, index: number) {
+    let newText = new PIXI.Text(text);
+    newText.y = index * this.rowSize + 15;
+    newText.x = 65;
+    newText.zIndex = 9999;
+    this.texts.push(newText);
+    this.textContainer.addChild(newText);
   }
 
   private setInitalText() {
@@ -121,16 +132,45 @@ export class BasicTextRect {
   }
 
   public selectTextId() {
-    this.resetText();
-    this.hide();
+    let tile = this.tiles[this.selectedText];
+    this.setToolTexts(tile.interact.possibleTools);
+    //this.resetText();
+    //this.hide();
+  }
+
+  setToolTexts(possibleTools: number[]): any {
+    this.texts = [];
+    this.textContainer.removeChildren();
+    this.initTextMarker();
+    this.availableTools = [];
+    for (let i = 0; i < possibleTools.length; i++) {
+      const toolNo = possibleTools[i];
+      for (let index = 0; index < this.tools.length; index++) {
+        const tool = this.tools[index];
+        if (tool.id == toolNo) {
+          this.availableTools.push(tool);
+          this.addText(tool.name, this.availableTools.length - 1);
+        }
+      }
+    }
+    this.setTextMarker();
+    this.resizeRect();
   }
 
   public moveTextMarker(down: number): any {
     if (down == 1) {
-      this.selectedText++;
+      if (this.texts.length - 1 == this.selectedText) {
+        this.selectedText = 0;
+      } else {
+        this.selectedText++;
+      }
     }
     if (down == 0) {
-      this.selectedText--;
+      if (0 == this.selectedText) {
+        this.selectedText = this.texts.length - 1;
+      } else {
+        this.selectedText--;
+      }
     }
     this.setTextMarker();
   }
