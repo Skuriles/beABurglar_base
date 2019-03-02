@@ -5,9 +5,9 @@
             "options": {
                 "image": "",
                 "electricty": 0,
-                "skill": 15,
+                "agility": 15,
                 "power": 15,
-                "locakpicking": 5,
+                "lockpicking": 5,
                 "explosives": 0,
                 "loudness": 25
             }
@@ -18,9 +18,9 @@
             "options": {
                 "image": "",
                 "electricty": 0,
-                "skill": 20,
+                "agility": 20,
                 "power": 5,
-                "locakpicking": 35,
+                "lockpicking": 35,
                 "explosives": 0,
                 "loudness": 5
             }
@@ -31,9 +31,9 @@
             "options": {
                 "image": "",
                 "electricty": 25,
-                "skill": 25,
+                "agility": 25,
                 "power": 20,
-                "locakpicking": 15,
+                "lockpicking": 15,
                 "explosives": 0,
                 "loudness": 70
             }
@@ -44,9 +44,9 @@
             "options": {
                 "image": "",
                 "electricty": 0,
-                "skill": 15,
+                "agility": 15,
                 "power": 15,
-                "locakpicking": 5,
+                "lockpicking": 5,
                 "explosives": 0,
                 "loudness": 100
             }
@@ -57,9 +57,9 @@
             "options": {
                 "image": "",
                 "electricty": 0,
-                "skill": 30,
+                "agility": 30,
                 "power": 5,
-                "locakpicking": 30,
+                "lockpicking": 30,
                 "explosives": 0,
                 "loudness": 5
             }
@@ -70,9 +70,9 @@
             "options": {
                 "image": "",
                 "electricty": 35,
-                "skill": 40,
+                "agility": 40,
                 "power": 5,
-                "locakpicking": 5,
+                "lockpicking": 5,
                 "explosives": 0,
                 "loudness": 20
             }

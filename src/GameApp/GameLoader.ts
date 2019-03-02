@@ -5,7 +5,8 @@ import MyKeyboard from "../MyKeybord/myKeyboard";
 import { Collision } from "../MyKeybord/Collision/collision";
 import { BasicTextRect } from "../GuiElements/basicText";
 import { GameStates } from "./GameState";
-import { Tool } from "../Levels/tools";
+import { Tool } from "../GameObjects/Tool";
+import { BaseChar } from "../Characters/baseChar";
 
 export class GameLoader {
   pixiLoader: PIXI.Loader;
@@ -14,7 +15,7 @@ export class GameLoader {
   moveX: number = 0;
   moveY: number = 0;
   walls: PIXI.Sprite[] = [];
-  private baseChar!: PIXI.AnimatedSprite;
+  private baseChar!: BaseChar;
   public app!: PIXI.Application;
   mainTextRect!: BasicTextRect;
   interactObjects: Tile[] = [];
@@ -39,7 +40,7 @@ export class GameLoader {
   }
 
   private createBasicText(): any {
-    this.mainTextRect = new BasicTextRect();
+    this.mainTextRect = new BasicTextRect(this);
     this.app.stage.addChild(this.mainTextRect.rect);
     this.app.stage.addChild(this.mainTextRect.textContainer);
     this.mainTextRect.show(false);
@@ -143,13 +144,17 @@ export class GameLoader {
   }
 
   private createBaseChar() {
+    this.baseChar = new BaseChar("Will Densemore");
     let id = this.pixiLoader.resources.baseCharJson.textures;
     if (id) {
-      this.baseChar = new PIXI.AnimatedSprite([id["char_0_0.png"]]);
-      this.baseChar.position.set(320, 192);
-      this.baseChar.hitArea = new PIXI.Rectangle(0, 0, 32, 32);
-      this.myKeyboard.assignKeyboardToSprite(this.baseChar, this.pixiLoader);
-      this.app.stage.addChild(this.baseChar);
+      this.baseChar.sprite = new PIXI.AnimatedSprite([id["char_0_0.png"]]);
+      this.baseChar.sprite.position.set(320, 192);
+      this.baseChar.sprite.hitArea = new PIXI.Rectangle(0, 0, 32, 32);
+      this.myKeyboard.assignKeyboardToSprite(
+        this.baseChar.sprite,
+        this.pixiLoader
+      );
+      this.app.stage.addChild(this.baseChar.sprite);
       this.app.ticker.add((delta: number) => this.play(delta));
     }
   }
@@ -161,7 +166,7 @@ export class GameLoader {
         const wall = this.walls[i];
         if (
           Collision.hitTestRectangle(
-            this.baseChar,
+            this.baseChar.sprite,
             wall,
             this.moveX,
             this.moveY
@@ -175,12 +180,12 @@ export class GameLoader {
       }
       // do all the automized stuff here!!
       if (moveAllowed) {
-        this.baseChar.x += this.moveX;
-        this.baseChar.y += this.moveY;
+        this.baseChar.sprite.x += this.moveX;
+        this.baseChar.sprite.y += this.moveY;
         this.myKeyboard.pixiKeyboard.keyboardManager.update();
       }
       let collision = Collision.contain(
-        this.baseChar,
+        this.baseChar.sprite,
         new PIXI.Rectangle(0, 0, 1600, 800)
       );
       switch (collision) {
@@ -212,7 +217,7 @@ export class GameLoader {
   public checkInteractionContainers(direction: number): any {
     for (let i = 0; i < this.interactObjects.length; i++) {
       const tile = this.interactObjects[i];
-      if (Collision.hitTestInteraction(this.baseChar, tile, direction)) {
+      if (Collision.hitTestInteraction(this.baseChar.sprite, tile, direction)) {
         if (tile.container) {
           let mainInteract: Tile;
           if (tile.interact.name && tile.interact.prey && tile.interact.type) {
@@ -290,5 +295,9 @@ export class GameLoader {
 
   public handleTextSelection(): void {
     this.mainTextRect.selectTextId();
+  }
+
+  public selectTool(tool: Tool): void {
+    // todo check tool skill
   }
 }

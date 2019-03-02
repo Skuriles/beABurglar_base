@@ -7,9 +7,9 @@ export class Tool {
 export class ToolOptions {
   image: string;
   electricty: number;
-  skill: number;
+  agility: number;
   power: number;
-  locakpicking: number;
+  lockpicking: number;
   explosives: number;
   loudness: number;
 }

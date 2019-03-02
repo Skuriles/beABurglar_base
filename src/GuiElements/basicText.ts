@@ -1,5 +1,7 @@
 import { Tile } from "../levels/level";
-import { Tool } from "../Levels/tools";
+import { Tool } from "../GameObjects/Tool";
+import { MenuTypes } from "./MenuTypes";
+import { GameLoader } from "../GameApp/GameLoader";
 
 export class BasicTextRect {
   rect: PIXI.Graphics;
@@ -11,8 +13,11 @@ export class BasicTextRect {
   rowSize = 50;
   tools: Tool[] = [];
   availableTools: any[];
+  menuMode: MenuTypes = MenuTypes.Unknown;
+  gameLoaderIntance: GameLoader;
 
-  constructor() {
+  constructor(gameloaderInstance: GameLoader) {
+    this.gameLoaderIntance = gameloaderInstance;
     this.initTextRect();
     this.textContainer = new PIXI.Container();
     this.textContainer.zIndex = 9995;
@@ -122,6 +127,9 @@ export class BasicTextRect {
   }
 
   private resetText() {
+    this.availableTools = [];
+    this.selectedText = 0;
+    this.tools = [];
     this.textMarker.y = this.selectedText * this.rowSize;
     for (let i = 0; i < this.texts.length; i++) {
       const text = this.texts[i];
@@ -132,13 +140,29 @@ export class BasicTextRect {
   }
 
   public selectTextId() {
-    let tile = this.tiles[this.selectedText];
-    this.setToolTexts(tile.interact.possibleTools);
-    //this.resetText();
-    //this.hide();
+    switch (this.menuMode) {
+      case MenuTypes.Interaction:
+        let tile = this.tiles[this.selectedText];
+        this.setToolTexts(tile.interact.possibleTools);
+        break;
+      case MenuTypes.StaticText:
+        this.resetText();
+        this.hide();
+        break;
+      case MenuTypes.Tools:
+        this.selectCurrentTool();
+        break;
+      default:
+        break;
+    }
   }
 
-  setToolTexts(possibleTools: number[]): any {
+  private selectCurrentTool() {
+    let tool = this.availableTools[this.selectedText];
+    this.gameLoaderIntance.selectTool(tool);
+  }
+
+  public setToolTexts(possibleTools: number[]): any {
     this.texts = [];
     this.textContainer.removeChildren();
     this.initTextMarker();
