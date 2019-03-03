@@ -46,6 +46,8 @@ export class GameLoader {
     this.mainTextRect = new BasicTextRect(this);
     this.app.stage.addChild(this.mainTextRect.rect);
     this.app.stage.addChild(this.mainTextRect.textContainer);
+    this.mainTextRect.warningRect.visible = false;
+    this.mainTextRect.warningTextContainer.visible = false;
     this.app.stage.addChild(this.mainTextRect.warningRect);
     this.app.stage.addChild(this.mainTextRect.warningTextContainer);
     this.mainTextRect.show(false);

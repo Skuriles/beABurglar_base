@@ -85,6 +85,11 @@ export class BasicTextRect {
     }, 20);
   }
 
+  public hideAll(): any {
+    this.hide();
+    this.hideWarn();
+  }
+
   public updateMainTextBox(tiles: Tile[], menuMode: MenuTypes) {
     this.menuMode = menuMode;
     this.texts = [];
@@ -123,11 +128,14 @@ export class BasicTextRect {
     this.warningTexts = [];
     this.warningTexts[0] = new PIXI.Text(text);
     this.warningTexts[0].zIndex = 9999;
-    this.warningTexts[0].x = 65;
-    this.warningTexts[0].y = 15;
+    this.warningTexts[0].x = 315;
+    this.warningTexts[0].y = 410;
     this.warningTextContainer.sortableChildren = true;
     this.warningTextContainer.addChild(this.warningTexts[0]);
     this.warningTextContainer.visible = true;
+    setTimeout(() => {
+      this.hideWarn();
+    }, 2000);
   }
 
   private resizeRect() {
@@ -157,7 +165,7 @@ export class BasicTextRect {
     this.warningRect.zIndex = 9990;
     this.warningRect.lineStyle(2, 0x000000, 1);
     this.warningRect.beginFill(0xffffff, 1);
-    this.warningRect.drawRoundedRect(200, 400, 600, this.rowSize, 15);
+    this.warningRect.drawRoundedRect(300, 400, 600, this.rowSize, 15);
     this.warningRect.endFill();
   }
 

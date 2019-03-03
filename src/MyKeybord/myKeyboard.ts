@@ -154,6 +154,9 @@ export default class MyKeyboard {
 
   private initDownEvent() {
     this.pixiKeyboard.keyboardManager.on("down", (key: number) => {
+      if (key == Key.ESCAPE) {
+        return;
+      }
       switch (this.gameLoaderInstance.gameMode) {
         case GameStates.Unknown:
           return;
@@ -196,6 +199,11 @@ export default class MyKeyboard {
           }
           break;
         case GameStates.Menu:
+          if (key == Key.ESCAPE) {
+            this.gameLoaderInstance.mainTextRect.hideAll();
+            this.gameLoaderInstance.gameMode = GameStates.Walking;
+            return;
+          }
           this.handleMenu(key);
           break;
       }

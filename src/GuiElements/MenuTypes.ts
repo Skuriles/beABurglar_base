@@ -3,5 +3,6 @@ export enum MenuTypes {
   StaticText,
   Interaction,
   Tools,
-  Prey
+  Prey,
+  Warning
 }
