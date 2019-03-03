@@ -154,7 +154,15 @@ export default class MyKeyboard {
 
   private initDownEvent() {
     this.pixiKeyboard.keyboardManager.on("down", (key: number) => {
-      this.checkDownEvent(key);
+      switch (this.gameLoaderInstance.gameMode) {
+        case GameStates.Unknown:
+          return;
+        case GameStates.Walking:
+          this.checkDownEvent(key);
+          break;
+        case GameStates.Menu:
+          break;
+      }
     });
   }
 

@@ -1,0 +1,21 @@
+{
+    "prey": [{
+            "id": 1,
+            "name": "Antique Book",
+            "matchValue": 1500,
+            "defaultValue": 1200
+        },
+        {
+            "id": 2,
+            "name": "Antique Book",
+            "matchValue": 200,
+            "defaultValue": 100
+        },
+        {
+            "id": 3,
+            "name": "Antique Book",
+            "matchValue": 500,
+            "defaultValue": 400
+        }
+    ]
+}

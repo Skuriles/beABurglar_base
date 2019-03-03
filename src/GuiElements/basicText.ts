@@ -2,17 +2,21 @@ import { Tile } from "../levels/level";
 import { Tool } from "../GameObjects/Tool";
 import { MenuTypes } from "./MenuTypes";
 import { GameLoader } from "../GameApp/GameLoader";
+import { Prey } from "../GameObjects/Prey";
 
 export class BasicTextRect {
   rect: PIXI.Graphics;
   textContainer: PIXI.Container;
   texts: PIXI.Text[] = [];
+  warningRect: PIXI.Graphics;
+  warningTextContainer: PIXI.Container;
+  warningTexts: PIXI.Text[] = [];
   tiles: Tile[] = [];
   textMarker: PIXI.Graphics;
   selectedText: number = 0;
   rowSize = 50;
   tools: Tool[] = [];
-  availableTools: any[];
+  availableTools: Tool[];
   menuMode: MenuTypes = MenuTypes.Unknown;
   gameLoaderIntance: GameLoader;
 
@@ -21,9 +25,12 @@ export class BasicTextRect {
     this.initTextRect();
     this.textContainer = new PIXI.Container();
     this.textContainer.zIndex = 9995;
+    this.initWarningTextRect();
+    this.warningTextContainer = new PIXI.Container();
+    this.warningTextContainer.zIndex = 9995;
     this.initTextMarker();
     this.textMarker.visible = false;
-    this.setInitalText();
+    this.setStaticText("Hello to be a Burglar");
   }
 
   public hide() {
@@ -57,7 +64,29 @@ export class BasicTextRect {
     }
   }
 
-  public updateMainTextBox(tiles: Tile[]) {
+  public showWarn() {
+    this.warningRect.alpha = 1;
+    this.warningTextContainer.alpha = 1;
+    this.warningRect.visible = true;
+    this.warningTextContainer.visible = true;
+  }
+
+  public hideWarn() {
+    let i = 20;
+    let cancel = setInterval(() => {
+      this.warningRect.alpha = 1 - 1 / i;
+      this.warningTextContainer.alpha = 1 - 1 / i;
+      i--;
+      if (i == 0) {
+        clearInterval(cancel);
+        this.warningRect.visible = false;
+        this.warningTextContainer.visible = false;
+      }
+    }, 20);
+  }
+
+  public updateMainTextBox(tiles: Tile[], menuMode: MenuTypes) {
+    this.menuMode = menuMode;
     this.texts = [];
     this.textContainer.removeChildren();
     this.initTextMarker();
@@ -78,14 +107,27 @@ export class BasicTextRect {
     this.textContainer.addChild(newText);
   }
 
-  private setInitalText() {
+  public setStaticText(text: string) {
+    this.textContainer.removeChildren();
     this.texts = [];
-    this.texts[0] = new PIXI.Text("Hello to be a Burglar");
+    this.texts[0] = new PIXI.Text(text);
     this.texts[0].zIndex = 9999;
     this.texts[0].x = 65;
     this.texts[0].y = 15;
     this.textContainer.sortableChildren = true;
     this.textContainer.addChild(this.texts[0]);
+  }
+
+  public setWarnText(text: string) {
+    this.warningTextContainer.removeChildren();
+    this.warningTexts = [];
+    this.warningTexts[0] = new PIXI.Text(text);
+    this.warningTexts[0].zIndex = 9999;
+    this.warningTexts[0].x = 65;
+    this.warningTexts[0].y = 15;
+    this.warningTextContainer.sortableChildren = true;
+    this.warningTextContainer.addChild(this.warningTexts[0]);
+    this.warningTextContainer.visible = true;
   }
 
   private resizeRect() {
@@ -110,6 +152,15 @@ export class BasicTextRect {
     this.textContainer.addChild(this.textMarker);
   }
 
+  initWarningTextRect(): any {
+    this.warningRect = new PIXI.Graphics();
+    this.warningRect.zIndex = 9990;
+    this.warningRect.lineStyle(2, 0x000000, 1);
+    this.warningRect.beginFill(0xffffff, 1);
+    this.warningRect.drawRoundedRect(200, 400, 600, this.rowSize, 15);
+    this.warningRect.endFill();
+  }
+
   initTextRect(): any {
     this.rect = new PIXI.Graphics();
     this.rect.zIndex = 9990;
@@ -127,9 +178,6 @@ export class BasicTextRect {
   }
 
   private resetText() {
-    this.availableTools = [];
-    this.selectedText = 0;
-    this.tools = [];
     this.textMarker.y = this.selectedText * this.rowSize;
     for (let i = 0; i < this.texts.length; i++) {
       const text = this.texts[i];
@@ -140,10 +188,17 @@ export class BasicTextRect {
   }
 
   public selectTextId() {
+    let tile = this.tiles[this.selectedText];
     switch (this.menuMode) {
       case MenuTypes.Interaction:
-        let tile = this.tiles[this.selectedText];
-        this.setToolTexts(tile.interact.possibleTools);
+        if (
+          tile.interact.possibleTools &&
+          tile.interact.possibleTools.length > 0
+        ) {
+          this.setToolTexts(tile.interact.possibleTools);
+        } else {
+          this.showPrey(tile);
+        }
         break;
       case MenuTypes.StaticText:
         this.resetText();
@@ -151,6 +206,9 @@ export class BasicTextRect {
         break;
       case MenuTypes.Tools:
         this.selectCurrentTool();
+        break;
+      case MenuTypes.Prey:
+        this.setPreyText(tile.interact.prey);
         break;
       default:
         break;
@@ -177,6 +235,7 @@ export class BasicTextRect {
         }
       }
     }
+    this.menuMode = MenuTypes.Tools;
     this.setTextMarker();
     this.resizeRect();
   }
@@ -197,5 +256,19 @@ export class BasicTextRect {
       }
     }
     this.setTextMarker();
+  }
+
+  private showPrey(tile: Tile) {
+    let prey = tile.interact.prey;
+    if (prey) {
+      this.setPreyText(prey);
+    }
+  }
+
+  private setPreyText(preys: Prey[]): void {
+    for (let i = 0; i < preys.length; i++) {
+      const prey = preys[i];
+      this.addText(prey.name, i);
+    }
   }
 }

@@ -1,3 +1,5 @@
+import { Prey } from "../GameObjects/Prey";
+
 export class Level {
   tilingSprites: TilingSprite[] = [];
   constructor(level: Level) {
@@ -15,7 +17,7 @@ export class Interact {
   type: InteractTypes = InteractTypes.unknown;
   altSprite: string = "";
   name: string = "";
-  prey: string = "";
+  prey: Prey[] = [];
   possibleTools: number[];
 }
 

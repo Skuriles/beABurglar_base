@@ -7,9 +7,9 @@ export class BaseChar {
   name: string;
   sprite: PIXI.AnimatedSprite;
   skills: Skill[];
-  prey: Prey[];
-  tools: Tool[];
-  cars: Car[];
+  prey: number[];
+  tools: number[];
+  cars: number[];
 
   constructor(name: string) {
     this.name = name;
@@ -17,12 +17,6 @@ export class BaseChar {
   }
 
   private addBaseToolsAndSkill() {
-      let skill = new Skill();
-      "electricty": 0,
-      "agility": 20,
-      "power": 5,
-      "lockpicking": 35,
-      "explosives": 0,
-      "loudness": 5
+    let skill = new Skill();
   }
 }

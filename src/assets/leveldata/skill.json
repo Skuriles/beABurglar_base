@@ -1,8 +1,26 @@
 {
-    "electricty": 0,
-    "agility": 20,
-    "power": 5,
-    "lockpicking": 35,
-    "explosives": 0,
-    "loudness": 5
+    "skills": [{
+            "id": 1,
+            "name": "electricty"
+        }, {
+            "id": 2,
+            "name": "agility"
+        }, {
+            "id": 3,
+            "name": "power"
+        }, {
+            "id": 4,
+            "name": "lockpicking"
+        }, {
+            "id": 5,
+            "name": "explosives"
+        }, {
+            "id": 6,
+            "name": "driving"
+        },
+        {
+            "id": 7,
+            "name": "loudness"
+        }
+    ]
 }

@@ -4,12 +4,29 @@
             "name": "Crowbar",
             "options": {
                 "image": "",
-                "electricty": 0,
-                "agility": 15,
-                "power": 15,
-                "lockpicking": 5,
-                "explosives": 0,
-                "loudness": 25
+                "skills": [{
+                        "id": 1,
+                        "value": 0
+                    },
+                    {
+                        "id": 2,
+                        "value": 15
+                    },
+                    {
+                        "id": 3,
+                        "value": 15
+                    },
+                    {
+                        "id": 4,
+                        "value": 5
+                    }, {
+                        "id": 5,
+                        "value": 0
+                    }, {
+                        "id": 7,
+                        "value": 25
+                    }
+                ]
             }
         },
         {
@@ -17,12 +34,29 @@
             "name": "Lockpick",
             "options": {
                 "image": "",
-                "electricty": 0,
-                "agility": 20,
-                "power": 5,
-                "lockpicking": 35,
-                "explosives": 0,
-                "loudness": 5
+                "skills": [{
+                        "id": 1,
+                        "value": 0
+                    },
+                    {
+                        "id": 2,
+                        "value": 20
+                    },
+                    {
+                        "id": 3,
+                        "value": 5
+                    },
+                    {
+                        "id": 4,
+                        "value": 35
+                    }, {
+                        "id": 5,
+                        "value": 0
+                    }, {
+                        "id": 7,
+                        "value": 5
+                    }
+                ]
             }
         },
         {
@@ -30,12 +64,29 @@
             "name": "Angle Grinder",
             "options": {
                 "image": "",
-                "electricty": 25,
-                "agility": 25,
-                "power": 20,
-                "lockpicking": 15,
-                "explosives": 0,
-                "loudness": 70
+                "skills": [{
+                        "id": 1,
+                        "value": 25
+                    },
+                    {
+                        "id": 2,
+                        "value": 25
+                    },
+                    {
+                        "id": 3,
+                        "value": 20
+                    },
+                    {
+                        "id": 4,
+                        "value": 15
+                    }, {
+                        "id": 5,
+                        "value": 0
+                    }, {
+                        "id": 7,
+                        "value": 70
+                    }
+                ]
             }
         },
         {
@@ -43,12 +94,29 @@
             "name": "Dynamit",
             "options": {
                 "image": "",
-                "electricty": 0,
-                "agility": 15,
-                "power": 15,
-                "lockpicking": 5,
-                "explosives": 0,
-                "loudness": 100
+                "skills": [{
+                        "id": 1,
+                        "value": 0
+                    },
+                    {
+                        "id": 2,
+                        "value": 15
+                    },
+                    {
+                        "id": 3,
+                        "value": 15
+                    },
+                    {
+                        "id": 4,
+                        "value": 5
+                    }, {
+                        "id": 5,
+                        "value": 60
+                    }, {
+                        "id": 7,
+                        "value": 100
+                    }
+                ]
             }
         },
         {
@@ -56,12 +124,30 @@
             "name": "Glass Cutter",
             "options": {
                 "image": "",
-                "electricty": 0,
-                "agility": 30,
-                "power": 5,
-                "lockpicking": 30,
-                "explosives": 0,
-                "loudness": 5
+                "skills": [{
+                        "id": 1,
+                        "value": 0
+                    },
+                    {
+                        "id": 2,
+                        "value": 30
+                    },
+                    {
+                        "id": 3,
+                        "value": 5
+                    },
+                    {
+                        "id": 4,
+                        "value": 30
+                    }, {
+                        "id": 5,
+                        "value": 0
+                    }, {
+                        "id": 7,
+                        "value": 5
+                    }
+                ]
+
             }
         },
         {
@@ -69,12 +155,29 @@
             "name": "Electronic Tool Kit",
             "options": {
                 "image": "",
-                "electricty": 35,
-                "agility": 40,
-                "power": 5,
-                "lockpicking": 5,
-                "explosives": 0,
-                "loudness": 20
+                "skills": [{
+                        "id": 1,
+                        "value": 35
+                    },
+                    {
+                        "id": 2,
+                        "value": 40
+                    },
+                    {
+                        "id": 3,
+                        "value": 5
+                    },
+                    {
+                        "id": 4,
+                        "value": 5
+                    }, {
+                        "id": 5,
+                        "value": 0
+                    }, {
+                        "id": 7,
+                        "value": 20
+                    }
+                ]
             }
         }
     ]

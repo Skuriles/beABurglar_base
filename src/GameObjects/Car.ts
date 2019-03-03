@@ -1,4 +1,7 @@
-export class Car {
+import { GameObject } from "./GameObject";
+
+export class Car implements GameObject {
+  id: number;
   name: string;
   value: number;
   speed: number;

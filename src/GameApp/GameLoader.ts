@@ -7,6 +7,8 @@ import { BasicTextRect } from "../GuiElements/basicText";
 import { GameStates } from "./GameState";
 import { Tool } from "../GameObjects/Tool";
 import { BaseChar } from "../Characters/baseChar";
+import { Skill } from "../Characters/Skill";
+import { MenuTypes } from "../GuiElements/MenuTypes";
 
 export class GameLoader {
   pixiLoader: PIXI.Loader;
@@ -23,6 +25,8 @@ export class GameLoader {
   level!: Level;
   gameMode: GameStates = GameStates.Unknown;
   tools: Tool[];
+  chars: BaseChar[];
+  skills: Skill[];
 
   constructor() {
     this.pixiLoader = PIXI.Loader.shared;
@@ -34,7 +38,6 @@ export class GameLoader {
     this.myKeyboard = new MyKeyboard(this);
     this.createMainContainer();
     this.createBasicText();
-    this.loadTools();
     this.loadLevelDataFromServer();
     this.gameMode = GameStates.Walking;
   }
@@ -43,7 +46,10 @@ export class GameLoader {
     this.mainTextRect = new BasicTextRect(this);
     this.app.stage.addChild(this.mainTextRect.rect);
     this.app.stage.addChild(this.mainTextRect.textContainer);
+    this.app.stage.addChild(this.mainTextRect.warningRect);
+    this.app.stage.addChild(this.mainTextRect.warningTextContainer);
     this.mainTextRect.show(false);
+    this.mainTextRect.hideWarn();
     setTimeout(() => {
       this.mainTextRect.hide();
     }, 1000);
@@ -52,9 +58,9 @@ export class GameLoader {
   private createMainContainer() {
     //Create a Pixi Application
     this.app = new PIXI.Application({
-      width: 1201, // default: 800
-      height: 800, // default: 600
-      antialias: true, // default: false
+      width: 1200,
+      height: 800,
+      antialias: true,
       resolution: 1
     });
     this.app.stage.sortableChildren = true;
@@ -71,7 +77,6 @@ export class GameLoader {
       "assets/tiles/character/main_char.json"
     );
     let levelData: Level = new Level(JSON.parse(responseData));
-
     levelData.tilingSprites.forEach(tilesSprite => {
       let resource = this.pixiLoader.resources[tilesSprite.fileName];
       if (!resource) {
@@ -91,6 +96,7 @@ export class GameLoader {
   }
 
   private loadLevel(level: Level) {
+    this.loadSkills();
     let id: any;
     this.level = level;
     level.tilingSprites.forEach(tilesSprite => {
@@ -140,11 +146,11 @@ export class GameLoader {
         }
       }
     });
-    this.createBaseChar();
   }
 
-  private createBaseChar() {
-    this.baseChar = new BaseChar("Will Densemore");
+  private createBaseChar(responseData: any) {
+    this.chars = JSON.parse(responseData).chars;
+    this.baseChar = this.chars[0];
     let id = this.pixiLoader.resources.baseCharJson.textures;
     if (id) {
       this.baseChar.sprite = new PIXI.AnimatedSprite([id["char_0_0.png"]]);
@@ -209,9 +215,27 @@ export class GameLoader {
   }
 
   private loadTools() {
-    this.http.requestJson("tools.json", (responseData: any) =>
-      this.getToolsData(responseData)
-    );
+    this.http.requestJson("tools.json", (responseData: any) => {
+      this.getToolsData(responseData);
+      this.loadChars();
+    });
+  }
+
+  private loadSkills() {
+    this.http.requestJson("tools.json", (responseData: any) => {
+      this.getSkillData(responseData);
+      this.loadTools();
+    });
+  }
+
+  private loadChars() {
+    this.http.requestJson("chars.json", (responseData: any) => {
+      this.createBaseChar(responseData);
+    });
+  }
+
+  private getSkillData(responseData: any) {
+    this.skills = JSON.parse(responseData).skills;
   }
 
   public checkInteractionContainers(direction: number): any {
@@ -229,7 +253,10 @@ export class GameLoader {
             this.gameMode = GameStates.Menu;
             // this.interactWithTile(mainInteract);
             this.mainTextRect.show(true);
-            this.mainTextRect.updateMainTextBox([mainInteract]);
+            this.mainTextRect.updateMainTextBox(
+              [mainInteract],
+              MenuTypes.Interaction
+            );
             this.setContainerAfterInteract(mainInteract);
             // todo check more than one container
             return;
@@ -238,7 +265,7 @@ export class GameLoader {
           this.gameMode = GameStates.Menu;
           //this.interactWithTile(tile);
           this.mainTextRect.show(true);
-          this.mainTextRect.updateMainTextBox([tile]);
+          this.mainTextRect.updateMainTextBox([tile], MenuTypes.Interaction);
           // todo check more than one sprite
           return;
         }
@@ -297,7 +324,36 @@ export class GameLoader {
     this.mainTextRect.selectTextId();
   }
 
-  public selectTool(tool: Tool): void {
-    // todo check tool skill
+  public selectTool(selectedTool: Tool): void {
+    let returnResult = false;
+    let result = this.baseChar.tools.indexOf(selectedTool.id);
+    if (result != -1) {
+      returnResult = this.checkSkillsFromTool(
+        this.baseChar.skills,
+        selectedTool
+      );
+    }
+    if (returnResult) {
+      this.gameMode = GameStates.Walking;
+      this.mainTextRect.hide();
+    } else {
+      this.mainTextRect.showWarn();
+      this.mainTextRect.setWarnText("Skill too low");
+    }
+  }
+
+  private checkSkillsFromTool(skills: Skill[], tool: Tool): boolean {
+    for (let i = 0; i < skills.length; i++) {
+      const skill = skills[i];
+      for (let j = 0; j < tool.options.skills.length; j++) {
+        const toolSkill = tool.options.skills[j];
+        if (toolSkill.id == skill.id) {
+          if (skill.value < toolSkill.value) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
   }
 }

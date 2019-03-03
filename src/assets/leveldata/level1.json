@@ -5,28 +5,28 @@
                 "id": "outside_1",
                 "tile": "tile_1_15.png",
                 "position_x": 0,
-                "position_y": 1,
+                "position_y": 0,
                 "width": 1200,
                 "height": 96
             }, {
                 "id": "outside_2",
                 "tile": "tile_1_15.png",
                 "position_x": 0,
-                "position_y": 705,
+                "position_y": 704,
                 "width": 1200,
                 "height": 96
             }, {
                 "id": "outside_3",
                 "tile": "tile_1_15.png",
                 "position_x": 1104,
-                "position_y": 97,
+                "position_y": 96,
                 "width": 96,
                 "height": 608
             }, {
                 "id": "outside_4",
                 "tile": "tile_1_15.png",
                 "position_x": 0,
-                "position_y": 97,
+                "position_y": 96,
                 "width": 96,
                 "height": 608
             },
@@ -34,7 +34,7 @@
                 "id": "mainBackground_1",
                 "tile": "tile_0_14.png",
                 "position_x": 128,
-                "position_y": 129,
+                "position_y": 128,
                 "width": 944,
                 "height": 544
             },
@@ -42,7 +42,7 @@
                 "id": "mainWallCornerLeft_1",
                 "tile": "tile_1_8.png",
                 "position_x": 96,
-                "position_y": 97,
+                "position_y": 96,
                 "width": 32,
                 "height": 32,
                 "collision": true
@@ -51,7 +51,7 @@
                 "id": "mainWallCornerRight_1",
                 "tile": "tile_1_9.png",
                 "position_x": 1072,
-                "position_y": 97,
+                "position_y": 96,
                 "width": 32,
                 "height": 32,
                 "collision": true
@@ -60,7 +60,7 @@
                 "id": "mainWallCornerLeftB_1",
                 "tile": "tile_2_8.png",
                 "position_x": 96,
-                "position_y": 673,
+                "position_y": 672,
                 "width": 32,
                 "height": 32,
                 "collision": true
@@ -69,7 +69,7 @@
                 "id": "mainWallCornerRightB_1",
                 "tile": "tile_2_9.png",
                 "position_x": 1072,
-                "position_y": 673,
+                "position_y": 672,
                 "width": 32,
                 "height": 32,
                 "collision": true
@@ -78,7 +78,7 @@
                 "id": "outside_4",
                 "tile": "tile_1_15.png",
                 "position_x": 600,
-                "position_y": 97,
+                "position_y": 96,
                 "width": 32,
                 "height": 32
             },
@@ -86,7 +86,7 @@
                 "id": "mainWallTop_1",
                 "tile": "tile_1_10.png",
                 "position_x": 128,
-                "position_y": 97,
+                "position_y": 96,
                 "width": 472,
                 "height": 32,
                 "collision": true
@@ -95,7 +95,7 @@
                 "id": "mainWallTop_2",
                 "tile": "tile_1_10.png",
                 "position_x": 632,
-                "position_y": 97,
+                "position_y": 96,
                 "width": 440,
                 "height": 32,
                 "collision": true
@@ -104,7 +104,7 @@
                 "id": "mainWallBottom_1",
                 "tile": "tile_1_10.png",
                 "position_x": 128,
-                "position_y": 673,
+                "position_y": 672,
                 "width": 944,
                 "height": 32,
                 "collision": true
@@ -113,7 +113,7 @@
                 "id": "mainWallLeft_1",
                 "tile": "tile_2_10.png",
                 "position_x": 96,
-                "position_y": 129,
+                "position_y": 128,
                 "width": 32,
                 "height": 544,
                 "collision": true
@@ -122,7 +122,7 @@
                 "id": "mainWallRight_1",
                 "tile": "tile_2_10.png",
                 "position_x": 1072,
-                "position_y": 129,
+                "position_y": 128,
                 "width": 32,
                 "height": 544,
                 "collision": true
@@ -132,7 +132,7 @@
                 "id": "doorTop_1",
                 "tile": "tile_32_4.png",
                 "position_x": 600,
-                "position_y": 97,
+                "position_y": 96,
                 "width": 32,
                 "height": 32,
                 "collision": true,
@@ -157,7 +157,7 @@
                     "prey": "Book",
                     "type": 2,
                     "altSprite": "tile_3_8.png",
-                    "possibleTools": [1]
+                    "possibleTools": []
                 }
             },
             {
