@@ -17,7 +17,7 @@ export class Interact {
   type: InteractTypes = InteractTypes.unknown;
   altSprite: string = "";
   name: string = "";
-  prey: Prey[] = [];
+  prey: number[] = [];
   possibleTools: number[];
 }
 

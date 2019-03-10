@@ -1,0 +1,1 @@
+Remove all Game Logic from basicText (only viewer => settooltext, setpreytext etc. => settextslist, setbasictex, setdetails text)

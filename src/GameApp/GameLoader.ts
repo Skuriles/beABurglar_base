@@ -3,12 +3,14 @@ import { http } from "../FileTransfer/http/http";
 import { Level, Tile, InteractTypes, TilingSprite } from "../levels/level";
 import MyKeyboard from "../MyKeybord/myKeyboard";
 import { Collision } from "../MyKeybord/Collision/collision";
-import { BasicTextRect } from "../GuiElements/basicText";
+import { BasicTextRect } from "../GuiElements/BasicTextRect";
 import { GameStates } from "./GameState";
 import { Tool } from "../GameObjects/Tool";
 import { BaseChar } from "../Characters/baseChar";
 import { Skill } from "../Characters/Skill";
 import { MenuTypes } from "../GuiElements/MenuTypes";
+import { Prey } from "../GameObjects/Prey";
+import { BasicText } from "../GuiElements/BasicText";
 
 export class GameLoader {
   pixiLoader: PIXI.Loader;
@@ -27,6 +29,8 @@ export class GameLoader {
   tools: Tool[];
   chars: BaseChar[];
   skills: Skill[];
+  currentInteract: Tile;
+  preys: Prey[];
 
   constructor() {
     this.pixiLoader = PIXI.Loader.shared;
@@ -35,6 +39,7 @@ export class GameLoader {
   }
 
   private init() {
+    this.currentInteract = null;
     this.myKeyboard = new MyKeyboard(this);
     this.createMainContainer();
     this.createBasicText();
@@ -94,7 +99,6 @@ export class GameLoader {
   private getToolsData(responseData: any) {
     let toolData = JSON.parse(responseData);
     this.tools = toolData.Tools;
-    this.mainTextRect.tools = this.tools;
   }
 
   private loadLevel(level: Level) {
@@ -219,7 +223,14 @@ export class GameLoader {
   private loadTools() {
     this.http.requestJson("tools.json", (responseData: any) => {
       this.getToolsData(responseData);
+      this.getPrey();
       this.loadChars();
+    });
+  }
+
+  private getPrey() {
+    this.http.requestJson("prey.json", (responseData: any) => {
+      this.preys = JSON.parse(responseData).prey;
     });
   }
 
@@ -252,6 +263,7 @@ export class GameLoader {
             mainInteract = this.getMainInteractTileFromContainer(tile);
           }
           if (mainInteract) {
+            this.currentInteract = mainInteract;
             this.gameMode = GameStates.Menu;
             // this.interactWithTile(mainInteract);
             this.mainTextRect.show(true);
@@ -265,7 +277,7 @@ export class GameLoader {
           }
         } else {
           this.gameMode = GameStates.Menu;
-          //this.interactWithTile(tile);
+          this.currentInteract = tile;
           this.mainTextRect.show(true);
           this.mainTextRect.updateMainTextBox([tile], MenuTypes.Interaction);
           // todo check more than one sprite
@@ -288,16 +300,23 @@ export class GameLoader {
   }
 
   private interactWithTile(tile: Tile) {
-    let resource = this.pixiLoader.resources[tile.parentFileName];
-    if (resource && resource.textures) {
-      tile.sprite.texture = resource.textures[tile.interact.altSprite];
-      if (tile.interact.type === InteractTypes.door) {
-        this.walls.forEach((tilingSprite: PIXI.Sprite, index: number) => {
-          if (tilingSprite == tile.sprite) {
-            this.walls.splice(index, 1);
+    switch (tile.interact.type) {
+      case InteractTypes.door:
+        let resource = this.pixiLoader.resources[tile.parentFileName];
+        if (resource && resource.textures) {
+          tile.sprite.texture = resource.textures[tile.interact.altSprite];
+          if (tile.interact.type === InteractTypes.door) {
+            this.walls.forEach((tilingSprite: PIXI.Sprite, index: number) => {
+              if (tilingSprite == tile.sprite) {
+                this.walls.splice(index, 1);
+              }
+            });
           }
-        });
-      }
+        }
+        break;
+      case InteractTypes.prey:
+        this.showPrey(tile);
+        break;
     }
   }
 
@@ -323,7 +342,55 @@ export class GameLoader {
   }
 
   public handleTextSelection(): void {
-    this.mainTextRect.selectTextId();
+    let textId = this.mainTextRect.selectedText;
+    let tile = this.currentInteract;
+    let menuMode = MenuTypes.Unknown;
+    switch (this.mainTextRect.menuMode) {
+      case MenuTypes.Interaction:
+        let texts: BasicText[] = [];
+        if (
+          tile.interact.possibleTools &&
+          tile.interact.possibleTools.length > 0
+        ) {
+          menuMode = MenuTypes.Tools;
+          for (let i = 0; i < tile.interact.possibleTools.length; i++) {
+            const toolNo = tile.interact.possibleTools[i];
+            for (let index = 0; index < this.tools.length; index++) {
+              const tool = this.tools[index];
+              if (tool.id == toolNo) {
+                //this.availableTools.push(tool);
+                const baseText = new BasicText();
+                baseText.id == tool.id;
+                baseText.text = tool.name;
+                texts.push(baseText);
+              }
+            }
+          }
+        } else {
+          menuMode = MenuTypes.Prey;
+          for (let i = 0; i < tile.interact.prey.length; i++) {
+            const prey = this.getPreyFromIndex(tile.interact.prey[i]);
+            const baseText = new BasicText();
+            baseText.id == prey.id;
+            baseText.text = prey.name;
+            texts.push(baseText);
+          }
+        }
+        this.mainTextRect.setListOfTexts(texts, menuMode);
+        break;
+      case MenuTypes.StaticText:
+        this.mainTextRect.resetText();
+        this.mainTextRect.hide();
+        break;
+      case MenuTypes.Tools:
+        this.selectTool(this.getToolFromId(textId));
+        break;
+      case MenuTypes.Prey:
+        this.setPreyText(tile.interact.prey);
+        break;
+      default:
+        break;
+    }
   }
 
   public selectTool(selectedTool: Tool): void {
@@ -337,6 +404,7 @@ export class GameLoader {
     }
     if (returnResult) {
       this.gameMode = GameStates.Walking;
+      this.handleInteractResult();
       this.mainTextRect.hide();
     } else {
       this.mainTextRect.showWarn();
@@ -357,5 +425,33 @@ export class GameLoader {
       }
     }
     return true;
+  }
+
+  private handleInteractResult() {
+    if (this.currentInteract.container) {
+      this.setContainerAfterInteract(this.currentInteract);
+    } else {
+      this.interactWithTile(this.currentInteract);
+    }
+  }
+
+  public getPreyFromIndex(index: number): Prey {
+    for (let i = 0; i < this.preys.length; i++) {
+      const prey = this.preys[i];
+      if (prey.id === index) {
+        return prey;
+      }
+    }
+    return null;
+  }
+
+  public getToolFromId(index: number): Tool {
+    for (let i = 0; i < this.tools.length; i++) {
+      const tool = this.tools[i];
+      if (tool.id === index) {
+        return tool;
+      }
+    }
+    return null;
   }
 }

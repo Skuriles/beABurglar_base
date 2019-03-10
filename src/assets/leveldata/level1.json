@@ -154,7 +154,7 @@
                 "collision": true,
                 "interact": {
                     "name": "Shelf",
-                    "prey": "Book",
+                    "prey": [1, 2, 3],
                     "type": 2,
                     "altSprite": "tile_3_8.png",
                     "possibleTools": []
