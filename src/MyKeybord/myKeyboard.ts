@@ -83,20 +83,20 @@ export default class MyKeyboard {
     this.currentKey = key;
     switch (key) {
       case Key.LEFT:
-        this.gameLoaderInstance.moveX = -4;
+        this.gameLoaderInstance.moveX = -3;
         this.gameLoaderInstance.moveY = 0;
         break;
       case Key.RIGHT:
-        this.gameLoaderInstance.moveX = 4;
+        this.gameLoaderInstance.moveX = 3;
         this.gameLoaderInstance.moveY = 0;
         break;
       case Key.UP:
         this.gameLoaderInstance.moveX = 0;
-        this.gameLoaderInstance.moveY = -4;
+        this.gameLoaderInstance.moveY = -3;
         break;
       case Key.DOWN:
         this.gameLoaderInstance.moveX = 0;
-        this.gameLoaderInstance.moveY = 4;
+        this.gameLoaderInstance.moveY = 3;
         break;
       case Key.ENTER:
         this.checkInteractionContainers();

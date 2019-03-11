@@ -3,7 +3,11 @@
             "id": 1,
             "name": "Antique Book",
             "matchValue": 1500,
-            "defaultValue": 1200
+            "defaultValue": 1200,
+            "skills": [{
+                "id": 3,
+                "value": 40
+            }]
         },
         {
             "id": 2,

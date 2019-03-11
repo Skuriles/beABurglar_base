@@ -10,11 +10,10 @@ export class BasicTextRect {
   warningRect: PIXI.Graphics;
   warningTextContainer: PIXI.Container;
   warningTexts: PIXI.Text[] = [];
-  tiles: Tile[] = [];
   textMarker: PIXI.Graphics;
   selectedText: number = 0;
+  selectedObjectIds: number[] = [];
   rowSize = 50;
-  menuMode: MenuTypes = MenuTypes.Unknown;
   gameLoaderIntance: GameLoader;
 
   constructor(gameloaderInstance: GameLoader) {
@@ -87,29 +86,23 @@ export class BasicTextRect {
     this.hideWarn();
   }
 
-  public updateMainTextBox(tiles: Tile[], menuMode: MenuTypes) {
-    this.menuMode = menuMode;
-    this.texts = [];
-    this.textContainer.removeChildren();
-    this.initTextMarker();
-    for (let i = 0; i < tiles.length; i++) {
-      this.addText(tiles[i].interact.name, i);
-      this.tiles.push(tiles[i]);
-    }
-    this.setTextMarker();
-    this.resizeRect();
+  public getSelectedObjectId(): number {
+    return this.selectedObjectIds[this.selectedText];
   }
 
-  private addText(text: string, index: number) {
+  private addText(text: string, index: number, textId: number) {
     let newText = new PIXI.Text(text);
+    newText.style;
     newText.y = index * this.rowSize + 15;
     newText.x = 65;
     newText.zIndex = 9999;
     this.texts.push(newText);
     this.textContainer.addChild(newText);
+    this.selectedObjectIds.push(textId);
   }
 
   public setStaticText(text: string) {
+    this.selectedObjectIds = [];
     this.textContainer.removeChildren();
     this.texts = [];
     this.texts[0] = new PIXI.Text(text);
@@ -176,13 +169,13 @@ export class BasicTextRect {
   }
 
   private setTextMarker(): any {
-    this.resetText();
+    this.refreshText();
     this.texts[this.selectedText].style = new PIXI.TextStyle({
       fill: 0xffffff
     });
   }
 
-  public resetText() {
+  public refreshText() {
     this.textMarker.y = this.selectedText * this.rowSize;
     for (let i = 0; i < this.texts.length; i++) {
       const text = this.texts[i];
@@ -210,15 +203,16 @@ export class BasicTextRect {
     this.setTextMarker();
   }
 
-  public setListOfTexts(texts: BasicText[], menuMode: MenuTypes): any {
+  public setListOfTexts(texts: BasicText[]): any {
     this.texts = [];
+    this.selectedObjectIds = [];
+    this.selectedText = 0;
     this.textContainer.removeChildren();
     this.initTextMarker();
     for (let i = 0; i < texts.length; i++) {
       const text = texts[i];
-      this.addText(text.text, text.id);
+      this.addText(text.text, i, text.id);
     }
-    this.menuMode = menuMode;
     this.setTextMarker();
     this.resizeRect();
   }

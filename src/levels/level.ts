@@ -1,9 +1,10 @@
-import { Prey } from "../GameObjects/Prey";
-
 export class Level {
   tilingSprites: TilingSprite[] = [];
   constructor(level: Level) {
-    this.tilingSprites = level.tilingSprites;
+    for (let i = 0; i < level.tilingSprites.length; i++) {
+      const sprite = level.tilingSprites[i];
+      this.tilingSprites.push(new TilingSprite(sprite));
+    }
   }
 }
 
@@ -11,6 +12,18 @@ export class TilingSprite {
   fileName: string = "";
   floortiles: Tile[] = [];
   interactObjects: Tile[] = [];
+
+  constructor(tilingSprite: TilingSprite) {
+    this.fileName = tilingSprite.fileName;
+    for (let i = 0; i < tilingSprite.floortiles.length; i++) {
+      const tile = tilingSprite.floortiles[i];
+      this.floortiles.push(new Tile(tile));
+    }
+    for (let i = 0; i < tilingSprite.interactObjects.length; i++) {
+      const tile = tilingSprite.interactObjects[i];
+      this.interactObjects.push(new Tile(tile));
+    }
+  }
 }
 
 export class Interact {
@@ -19,6 +32,14 @@ export class Interact {
   name: string = "";
   prey: number[] = [];
   possibleTools: number[];
+
+  constructor(interact: Interact) {
+    this.type = interact.type;
+    this.altSprite = interact.altSprite ? interact.altSprite : "";
+    this.name = interact.name;
+    this.prey = interact.prey ? interact.prey : [];
+    this.possibleTools = interact.possibleTools ? interact.possibleTools : [];
+  }
 }
 
 export enum InteractTypes {
@@ -42,8 +63,17 @@ export class Tile {
   sprite!: PIXI.TilingSprite;
   parentFileName: string = "";
 
-  constructor() {
-    this.interact = new Interact();
-    this.container = "";
+  constructor(tile: Tile) {
+    this.id = tile.id;
+    this.tile = tile.tile;
+    this.position_x = tile.position_x;
+    this.position_y = tile.position_y;
+    this.width = tile.width;
+    this.height = tile.height;
+    this.collision = tile.collision;
+    this.interact = tile.interact ? new Interact(tile.interact) : null;
+    this.scale = tile.scale ? tile.scale : 1;
+    this.container = tile.container ? tile.container : null;
+    this.parentFileName = tile.parentFileName ? tile.parentFileName : "";
   }
 }
