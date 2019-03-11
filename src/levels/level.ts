@@ -62,6 +62,7 @@ export class Tile {
   container: string;
   sprite!: PIXI.TilingSprite;
   parentFileName: string = "";
+  zIndex: number;
 
   constructor(tile: Tile) {
     this.id = tile.id;

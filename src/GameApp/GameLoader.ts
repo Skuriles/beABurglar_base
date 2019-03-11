@@ -121,6 +121,7 @@ export class GameLoader {
               tile.width,
               tile.height
             );
+            floorTiles.zIndex = tile.zIndex ? tile.zIndex : 1;
             floorTiles.position.set(tile.position_x, tile.position_y);
             if (tile.collision) {
               this.walls.push(floorTiles);
@@ -139,6 +140,7 @@ export class GameLoader {
               tile.width,
               tile.height
             );
+            interactObjects.zIndex = tile.zIndex ? tile.zIndex : 1;
             interactObjects.position.set(tile.position_x, tile.position_y);
             if (tile.collision) {
               this.walls.push(interactObjects);

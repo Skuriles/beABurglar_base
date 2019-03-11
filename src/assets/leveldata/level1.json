@@ -126,6 +126,100 @@
                 "width": 32,
                 "height": 544,
                 "collision": true
+            },
+            {
+                "id": "desk_1",
+                "tile": "tile_6_5.png",
+                "position_x": 160,
+                "position_y": 256,
+                "width": 32,
+                "height": 32,
+                "collision": true,
+                "zIndex": 2
+            },
+            {
+                "id": "desk_2",
+                "tile": "tile_6_6.png",
+                "position_x": 192,
+                "position_y": 256,
+                "width": 32,
+                "height": 32,
+                "collision": true,
+                "zIndex": 2
+            },
+            {
+                "id": "desk_4",
+                "tile": "tile_13_3.png",
+                "position_x": 192,
+                "position_y": 224,
+                "width": 32,
+                "height": 32,
+                "collision": true,
+                "zIndex": 2
+            }, {
+                "id": "fruit_1",
+                "tile": "tile_6_4.png",
+                "position_x": 192,
+                "position_y": 128,
+                "width": 32,
+                "height": 32,
+                "collision": true,
+                "zIndex": 2
+            }, {
+                "id": "fruit_2",
+                "tile": "tile_6_3.png",
+                "position_x": 160,
+                "position_y": 128,
+                "width": 32,
+                "height": 32,
+                "collision": true,
+                "zIndex": 2
+            },
+            {
+                "id": "fruit_3",
+                "tile": "tile_5_3.png",
+                "position_x": 128,
+                "position_y": 128,
+                "width": 32,
+                "height": 32,
+                "collision": true,
+                "zIndex": 2
+            }, {
+                "id": "deco_1",
+                "tile": "tile_12_0.png",
+                "position_x": 320,
+                "position_y": 480,
+                "width": 32,
+                "height": 32,
+                "collision": true,
+                "zIndex": 2
+            }, {
+                "id": "deco_2",
+                "tile": "tile_12_1.png",
+                "position_x": 352,
+                "position_y": 480,
+                "width": 32,
+                "height": 32,
+                "collision": true,
+                "zIndex": 2
+            }, {
+                "id": "deco_3",
+                "tile": "tile_13_0.png",
+                "position_x": 320,
+                "position_y": 512,
+                "width": 32,
+                "height": 32,
+                "collision": true,
+                "zIndex": 2
+            }, {
+                "id": "deco_4",
+                "tile": "tile_13_1.png",
+                "position_x": 352,
+                "position_y": 512,
+                "width": 32,
+                "height": 32,
+                "collision": true,
+                "zIndex": 2
             }
         ],
         "interactObjects": [{
@@ -147,7 +241,7 @@
                 "id": "bookshelf_1",
                 "tile": "tile_3_7.png",
                 "position_x": 401,
-                "position_y": 320,
+                "position_y": 96,
                 "width": 32,
                 "height": 32,
                 "container": "bookShelf_1",
@@ -164,7 +258,7 @@
                 "id": "bookshelf_2",
                 "tile": "tile_3_8.png",
                 "position_x": 432,
-                "position_y": 320,
+                "position_y": 96,
                 "width": 32,
                 "height": 32,
                 "container": "bookShelf_1",
@@ -177,7 +271,7 @@
                 "id": "bookshelf_3",
                 "tile": "tile_4_7.png",
                 "position_x": 401,
-                "position_y": 352,
+                "position_y": 128,
                 "width": 32,
                 "height": 32,
                 "container": "bookShelf_1",
@@ -190,13 +284,29 @@
                 "id": "bookshelf_4",
                 "tile": "tile_4_8.png",
                 "position_x": 432,
-                "position_y": 352,
+                "position_y": 128,
                 "width": 32,
                 "height": 32,
                 "container": "bookShelf_1",
                 "collision": true,
                 "interact": {
                     "altSprite": "tile_3_8.png"
+                }
+            }, {
+                "id": "desk_3",
+                "tile": "tile_5_6.png",
+                "position_x": 192,
+                "position_y": 192,
+                "width": 32,
+                "height": 32,
+                "collision": true,
+                "zIndex": 2,
+                "interact": {
+                    "name": "Cash Register",
+                    "prey": [4],
+                    "type": 2,
+                    "altSprite": "tile_3_8.png",
+                    "possibleTools": [1]
                 }
             }
         ]
