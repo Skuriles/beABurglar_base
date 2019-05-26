@@ -173,6 +173,7 @@ export class GameLoader {
         this.baseChar.sprite,
         this.pixiLoader
       );
+      this.baseChar.sprite.zIndex = 999;
       this.app.stage.addChild(this.baseChar.sprite);
       this.app.ticker.add((delta: number) => this.play(delta));
     }
@@ -402,8 +403,8 @@ export class GameLoader {
     for (let i = 0; i < this.level.tilingSprites.length; i++) {
       const tilingSprite = this.level.tilingSprites[i];
       if (tilingSprite.fileName == containerTile.parentFileName) {
-        for (let j = 0; j < tilingSprite.floortiles.length; j++) {
-          const tile = tilingSprite.floortiles[j];
+        for (let j = 0; j < tilingSprite.interactObjects.length; j++) {
+          const tile = tilingSprite.interactObjects[j];
           if (tile.container == containerTile.container) {
             if (
               tile.interact.name &&

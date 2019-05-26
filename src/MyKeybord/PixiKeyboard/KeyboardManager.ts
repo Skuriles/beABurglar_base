@@ -1,5 +1,6 @@
 import HotKey from "./HotKey";
 import Key from "./Key";
+import * as PIXI from "pixi.js";
 
 export default class KeyboardManager extends PIXI.utils.EventEmitter {
   isEnabled: boolean;

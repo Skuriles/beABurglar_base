@@ -1,5 +1,4 @@
-import { Tile } from "../levels/level";
-import { MenuTypes } from "./MenuTypes";
+import * as PIXI from "pixi.js";
 import { GameLoader } from "../GameApp/GameLoader";
 import { BasicText, DetailText } from "./BasicText";
 
