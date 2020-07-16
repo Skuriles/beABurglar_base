@@ -11,7 +11,7 @@
     "emoji-regex": "^7.0.3",
     "es6-promise": "^4.2.6",
     "less": "^3.9.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "pixi-ui": "git+https://github.com/pixijs/pixi-ui.git",
     "pixi.js": "^5.0.3",
     "spritesheet-js": "^1.2.6"
